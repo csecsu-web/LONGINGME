@@ -1,0 +1,31 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Fragments collection
+    match /fragments/{fragmentId} {
+      // Anyone can read non-flagged fragments
+      allow read: if resource.data.flagged == false;
+      
+      // Authenticated (anonymous) users can create
+      allow create: if request.auth != null 
+                    && request.resource.data.keys().hasAll(['text', 'userId', 'createdAt', 'state', 'flagged'])
+                    && request.resource.data.text is string
+                    && request.resource.data.text.size() > 0
+                    && request.resource.data.text.size() <= 500
+                    && request.resource.data.userId == request.auth.uid
+                    && request.resource.data.flagged == false;
+      
+      // Only allow updates to flag field (for moderation - would need Cloud Function)
+      allow update: if false; // Disable direct updates for now
+      
+      // No deletion by users
+      allow delete: if false;
+    }
+    
+    // Deny all other collections
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
