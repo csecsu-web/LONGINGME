@@ -1,23 +1,19 @@
-// Firebase Configuration
-// IMPORTANT: Replace these values with your own Firebase project credentials
-// Get them from: Firebase Console > Project Settings > General > Your apps > Web app
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT_ID.appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
-};
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDzF0HnhAFe0_WC_7CI2eeDSy0h06MtnFA",
+    authDomain: "longingmegit-04895252-75576.firebaseapp.com",
+    projectId: "longingmegit-04895252-75576",
+    storageBucket: "longingmegit-04895252-75576.firebasestorage.app",
+    messagingSenderId: "89275910615",
+    appId: "1:89275910615:web:68f3444038343ffa106392"
+  };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-
-// Initialize services
-const auth = firebase.auth();
-const db = firebase.firestore();
-
-// Export for use in app.js
-window.firebaseAuth = auth;
-window.firebaseDB = db;
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
