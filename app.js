@@ -1,39 +1,45 @@
-// A Quiet Space - Supabase Version
+// Longingme — app.js
+// Supabase: https://hapkolokdrzwprilmpce.supabase.co
 (function () {
     'use strict';
 
-    // ─── Supabase Config ────────────────────────────────────────────────────────
+    // ── Supabase ──────────────────────────────────────────────────────────────
     const SUPABASE_URL = 'https://hapkolokdrzwprilmpce.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_V_zCthxiaKw9jBam5Ztjgg_8SRaG8rj';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ─── State ───────────────────────────────────────────────────────────────────
-    let selectedState = null;
-    let currentOffset  = 0;
+    // ── Local storage key for private entries ─────────────────────────────────
+    const PRIVATE_KEY = 'longingme_private';
+
+    // ── State ─────────────────────────────────────────────────────────────────
+    let selectedTag    = '';
+    let activeFilter   = '';
+    let wallOffset     = 0;
     const PAGE_SIZE    = 10;
 
-    // ─── Mirror messages ─────────────────────────────────────────────────────────
-    const mirrorMessages = {
-        'out-of-control': "Sometimes control shows up when safety was missing.",
-        'empty':          "Emptiness can be the space left behind when feeling became too much.",
-        'scared':         "Fear of letting go can mean something mattered deeply.",
-        'unreal':         "Disconnection is sometimes protection.",
-        'overwhelmed':    "Being overwhelmed doesn't mean you're failing.",
-        'unknown':        "Not knowing is still knowing something is wrong.",
-        'skip':           null
-    };
+    // ── Daily prompts ─────────────────────────────────────────────────────────
+    const dailyPrompts = [
+        "What feels heavier than it looks?",
+        "What would you say if no one could judge you?",
+        "What have you been carrying alone?",
+        "What does it feel like right now, in your body?",
+        "What do you wish someone understood about you?",
+        "What are you pretending is okay?",
+        "What would you tell yourself from a year ago?",
+        "What do you keep almost saying?",
+        "What does tired feel like for you?",
+        "What would it mean to let yourself rest?"
+    ];
 
-    // ─── Safety filters ──────────────────────────────────────────────────────────
+    // ── Safety ────────────────────────────────────────────────────────────────
     const dangerousPatterns = [
         /\b(\d+)\s*(pills?|tablets?|capsules?)\b/i,
         /\b(\d+)\s*(cuts?|slashes?)\b/i,
         /\b(\d+)\s*(lbs?|kg|pounds?|kilos?)\b/i,
         /\b(\d+)\s*(calories?|cal)\b/i,
         /\bhow\s+to\s+(kill|hurt|harm|cut|overdose)/i,
-        /\bstep\s+by\s+step\s+(suicide|self[\s-]?harm)/i,
         /\byou\s+should\s+(kill|hurt|harm)\s+yourself/i,
     ];
-
     const crisisPatterns = [
         /\b(want|going|plan|planning)\s+to\s+(die|kill\s+myself|end\s+it)\b/i,
         /\bsuicide\s+(plan|attempt|note)\b/i,
@@ -41,209 +47,256 @@
         /\bno\s+reason\s+to\s+(live|continue|go\s+on)\b/i
     ];
 
-    // ─── DOM refs ────────────────────────────────────────────────────────────────
+    // ── DOM helpers ───────────────────────────────────────────────────────────
     const $ = id => document.getElementById(id);
+    const $$ = sel => document.querySelectorAll(sel);
 
-    const screens = {
-        loading: $('loading'),
-        entry:   $('entry-screen'),
-        main:    $('main-screen')
-    };
+    // ── Init ──────────────────────────────────────────────────────────────────
+    function init() {
+        setDailyPrompt();
+        setupNavigation();
+        setupWritePage();
+        setupReadPage();
+        loadPrivateEntries();
 
-    const sections = {
-        write: $('write-section'),
-        read:  $('read-section'),
-        about: $('about-section')
-    };
+        setTimeout(() => switchScreen('home-screen'), 900);
+    }
 
-    (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
-diff --git a/app.js b/app.js
-index 655be1e186337810cd7dc85e2e97bf4146d53445..1019cd0843ac33f6d94f9b67b07b6bda1a89fb8d 100644
---- a/app.js
-+++ b/app.js
-@@ -58,76 +58,90 @@
- 
-     const fragmentInput    = $('fragment-input');
-     const submitBtn        = $('submit-btn');
-     const charCount        = $('char-count');
-     const confirmation     = $('confirmation');
-     const writeAnother     = $('write-another');
-     const mirrorEl         = $('mirror-message');
-     const fragmentsContainer = $('fragments-container');
-     const loadMoreBtn      = $('load-more');
- 
-     // ─── Init ────────────────────────────────────────────────────────────────────
-     async function init() {
-         setupListeners();
-         // Small delay so "preparing space..." is visible
-         setTimeout(() => switchScreen('entry'), 900);
-     }
- 
-     // ─── Listeners ───────────────────────────────────────────────────────────────
-     function setupListeners() {
-         document.querySelectorAll('.state-btn').forEach(btn =>
-             btn.addEventListener('click', onStateSelect));
- 
-         document.querySelectorAll('.nav-btn').forEach(btn =>
-             btn.addEventListener('click', onNavClick));
- 
-+        document.querySelectorAll('[data-quick-nav]').forEach(btn =>
-+            btn.addEventListener('click', onQuickNavigate));
-+
-         fragmentInput.addEventListener('input', onInputChange);
-         submitBtn.addEventListener('click', onSubmit);
-         writeAnother.addEventListener('click', resetWrite);
-         loadMoreBtn.addEventListener('click', loadFragments);
-     }
- 
-     // ─── State selection ─────────────────────────────────────────────────────────
-     function onStateSelect(e) {
-         selectedState = e.target.dataset.state;
- 
-         const msg = mirrorMessages[selectedState];
-         if (msg) {
-             mirrorEl.textContent = msg;
-             mirrorEl.classList.add('visible');
-         }
- 
-         switchScreen('main');
-         loadFragments(true);
-     }
- 
-     // ─── Navigation ──────────────────────────────────────────────────────────────
-     function onNavClick(e) {
-         const target = e.target.id.replace('nav-', '');
-+        navigateToSection(target);
-+    }
-+
-+    function onQuickNavigate(e) {
-+        const target = e.target.dataset.quickNav;
-+        selectedState = selectedState || 'skip';
-+        switchScreen('main');
-+        navigateToSection(target);
-+    }
- 
-+    function navigateToSection(target) {
-         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    // ── Daily prompt ──────────────────────────────────────────────────────────
+    function setDailyPrompt() {
+        const idx = new Date().getDate() % dailyPrompts.length;
+        const el = $('daily-prompt-text');
+        if (el) el.textContent = dailyPrompts[idx];
+    }
 
-+        const activeNav = document.getElementById(`nav-${target}`);
-+        if (activeNav) activeNav.classList.add('active');
- 
-         Object.keys(sections).forEach(k => sections[k].classList.remove('active'));
-         sections[target].classList.add('active');
- 
-         if (target === 'read') loadFragments(true);
-     }
- 
-     // ─── Input ───────────────────────────────────────────────────────────────────
-     function onInputChange() {
-         const len = fragmentInput.value.length;
-         charCount.textContent = `${len} / 500`;
-         submitBtn.disabled = len === 0;
-     }
- 
-     // ─── Submit ──────────────────────────────────────────────────────────────────
-     async function onSubmit() {
-         const text = fragmentInput.value.trim();
-         if (!text) return;
- 
-         if (!isSafe(text)) {
-             showCrisis();
-             return;
-         }
- 
-         submitBtn.disabled = true;
- 
-EOF
-)
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'releasing...';
+    // ── Navigation ────────────────────────────────────────────────────────────
+    function setupNavigation() {
+        // All buttons with data-page attribute
+        document.addEventListener('click', e => {
+            const target = e.target.closest('[data-page]');
+            if (!target) return;
+            const page = target.dataset.page;
+            switchScreen(page);
 
-        const { error } = await supabase
-            .from('fragments')
-            .insert([{
-                text:    text,
-                state:   selectedState || 'unknown',
-                flagged: false
-            }]);
+            if (page === 'read-page') loadWall(true);
+        });
+    }
 
-        if (error) {
-            console.error('Submit error:', error);
-            alert('Something went wrong. Please try again.');
-            submitBtn.disabled = false;
-            submitBtn.textContent = 'release';
+    function switchScreen(id) {
+        $$('.screen').forEach(s => s.classList.remove('active'));
+        const el = $(id);
+        if (el) {
+            el.style.display = 'block';
+            // Force reflow then add active
+            requestAnimationFrame(() => {
+                el.classList.add('active');
+            });
+        }
+        window.scrollTo(0, 0);
+    }
+
+    // ── Write page ────────────────────────────────────────────────────────────
+    function setupWritePage() {
+        const textarea   = $('entry-input');
+        const charCount  = $('write-char-count');
+        const saveBtn    = $('save-private-btn');
+        const shareBtn   = $('share-anon-btn');
+        const confirm    = $('write-confirmation');
+        const againBtn   = $('write-again-btn');
+
+        // Emotion tags
+        $$('.etag').forEach(btn => {
+            btn.addEventListener('click', () => {
+                $$('.etag').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedTag = btn.dataset.tag;
+            });
+        });
+
+        // Textarea
+        textarea.addEventListener('input', () => {
+            const len = textarea.value.length;
+            charCount.textContent = `${len} / 1000`;
+            const hasText = len > 0;
+            saveBtn.disabled  = !hasText;
+            shareBtn.disabled = !hasText;
+        });
+
+        // Save privately
+        saveBtn.addEventListener('click', () => {
+            const text = textarea.value.trim();
+            if (!text) return;
+
+            if (!isSafe(text)) { showCrisis(); return; }
+
+            savePrivate(text);
+            showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount);
+        });
+
+        // Share anonymously
+        shareBtn.addEventListener('click', async () => {
+            const text = textarea.value.trim();
+            if (!text) return;
+
+            if (!isSafe(text)) { showCrisis(); return; }
+
+            shareBtn.disabled = true;
+            shareBtn.textContent = 'sharing...';
+
+            const { error } = await db
+                .from('entries')
+                .insert([{
+                    content:   text,
+                    is_shared: true,
+                    emotion_tag: selectedTag || null
+                }]);
+
+            if (error) {
+                console.error('Share error:', error);
+                alert('Something went wrong. Please try again.');
+                shareBtn.disabled = false;
+                shareBtn.textContent = 'Share anonymously';
+                return;
+            }
+
+            showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount);
+        });
+
+        // Write again
+        againBtn.addEventListener('click', () => {
+            confirm.classList.add('hidden');
+            document.querySelector('.write-area') && (document.querySelector('.write-area').style.display = 'block');
+            textarea.value = '';
+            charCount.textContent = '0 / 1000';
+            saveBtn.disabled  = true;
+            shareBtn.disabled = true;
+            shareBtn.textContent = 'Share anonymously';
+            textarea.focus();
+        });
+    }
+
+    function showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount) {
+        textarea.value = '';
+        charCount.textContent = '0 / 1000';
+        saveBtn.disabled  = true;
+        shareBtn.disabled = true;
+        shareBtn.textContent = 'Share anonymously';
+        confirm.classList.remove('hidden');
+        loadPrivateEntries();
+    }
+
+    // ── Private entries (localStorage) ───────────────────────────────────────
+    function savePrivate(text) {
+        const entries = getPrivate();
+        entries.unshift({ text, timestamp: Date.now(), tag: selectedTag });
+        // Keep max 50
+        localStorage.setItem(PRIVATE_KEY, JSON.stringify(entries.slice(0, 50)));
+    }
+
+    function getPrivate() {
+        try {
+            return JSON.parse(localStorage.getItem(PRIVATE_KEY)) || [];
+        } catch { return []; }
+    }
+
+    function loadPrivateEntries() {
+        const list = $('private-entries-list');
+        if (!list) return;
+        const entries = getPrivate();
+
+        if (entries.length === 0) {
+            list.innerHTML = '<p class="empty-note">Nothing saved yet.</p>';
             return;
         }
 
-        // Show confirmation
-        fragmentInput.value = '';
-        charCount.textContent = '0 / 500';
-        document.querySelector('.write-area').style.display = 'none';
-        confirmation.classList.remove('hidden');
+        list.innerHTML = '';
+        entries.forEach(e => {
+            const card = document.createElement('div');
+            card.className = 'private-entry-card';
+            card.textContent = e.text;
+            list.appendChild(card);
+        });
     }
 
-    // ─── Reset write area ────────────────────────────────────────────────────────
-    function resetWrite() {
-        confirmation.classList.add('hidden');
-        document.querySelector('.write-area').style.display = 'block';
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'release';
-        fragmentInput.focus();
+    // ── Read / Shared Wall ────────────────────────────────────────────────────
+    function setupReadPage() {
+        // Filter buttons
+        $$('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                $$('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter = btn.dataset.filter;
+                loadWall(true);
+            });
+        });
+
+        $('wall-load-more').addEventListener('click', () => loadWall(false));
     }
 
-    // ─── Load fragments ───────────────────────────────────────────────────────────
-    async function loadFragments(reset = false) {
+    async function loadWall(reset = false) {
+        const wall    = $('shared-wall');
+        const loadBtn = $('wall-load-more');
+        if (!wall) return;
+
         if (reset) {
-            currentOffset = 0;
-            fragmentsContainer.innerHTML = '<p class="loading-text">loading...</p>';
-            loadMoreBtn.style.display = 'none';
+            wallOffset = 0;
+            wall.innerHTML = '<p class="loading-note">loading...</p>';
+            loadBtn.style.display = 'none';
         }
 
-        const { data, error } = await supabase
-            .from('fragments')
-            .select('text, state')
-            .eq('flagged', false)
+        let query = db
+            .from('entries')
+            .select('content, emotion_tag')
+            .eq('is_shared', true)
             .order('created_at', { ascending: false })
-            .range(currentOffset, currentOffset + PAGE_SIZE - 1);
+            .range(wallOffset, wallOffset + PAGE_SIZE - 1);
+
+        if (activeFilter) {
+            query = query.eq('emotion_tag', activeFilter);
+        }
+
+        const { data, error } = await query;
 
         if (error) {
-            console.error('Load error:', error);
-            fragmentsContainer.innerHTML = '<p class="loading-text">Could not load fragments.</p>';
+            console.error('Wall load error:', error);
+            wall.innerHTML = '<p class="loading-note">Could not load entries.</p>';
             return;
         }
 
-        if (reset) fragmentsContainer.innerHTML = '';
+        if (reset) wall.innerHTML = '';
 
         if (!data || data.length === 0) {
-            if (currentOffset === 0) {
-                fragmentsContainer.innerHTML = '<p class="loading-text">No fragments yet. Be the first to write.</p>';
+            if (wallOffset === 0) {
+                wall.innerHTML = '<p class="loading-note">Nothing here yet. Be the first to share.</p>';
             }
-            loadMoreBtn.style.display = 'none';
+            loadBtn.style.display = 'none';
             return;
         }
 
-        data.forEach(f => addFragmentCard(f.text));
-        currentOffset += data.length;
+        data.forEach(entry => {
+            const card = document.createElement('div');
+            card.className = 'fragment-card';
 
-        loadMoreBtn.style.display = data.length < PAGE_SIZE ? 'none' : 'block';
-        loadMoreBtn.textContent = 'see more';
-        loadMoreBtn.disabled = false;
+            const text = document.createElement('p');
+            text.className = 'fragment-text';
+            text.textContent = entry.content;
+            card.appendChild(text);
+
+            if (entry.emotion_tag) {
+                const tag = document.createElement('span');
+                tag.className = 'fragment-tag';
+                tag.textContent = entry.emotion_tag;
+                card.appendChild(tag);
+            }
+
+            wall.appendChild(card);
+        });
+
+        wallOffset += data.length;
+        loadBtn.style.display = data.length < PAGE_SIZE ? 'none' : 'block';
     }
 
-    // ─── Add card to DOM ─────────────────────────────────────────────────────────
-    function addFragmentCard(text) {
-        const card = document.createElement('div');
-        card.className = 'fragment-card';
-
-        const p = document.createElement('p');
-        p.className = 'fragment-text';
-        p.textContent = text;
-
-        card.appendChild(p);
-        fragmentsContainer.appendChild(card);
-    }
-
-    // ─── Safety ──────────────────────────────────────────────────────────────────
+    // ── Safety ────────────────────────────────────────────────────────────────
     function isSafe(text) {
         for (const p of dangerousPatterns) if (p.test(text)) return false;
         for (const p of crisisPatterns)   if (p.test(text)) return false;
@@ -252,7 +305,8 @@ EOF
 
     function showCrisis() {
         alert(
-            "We understand you're struggling, but this space cannot provide the immediate help you may need.\n\n" +
+            "We understand you're struggling, but this space cannot provide " +
+            "the immediate help you may need.\n\n" +
             "If you're in crisis, please reach out:\n\n" +
             "• 988 Suicide & Crisis Lifeline: Call or text 988 (US)\n" +
             "• Crisis Text Line: Text HOME to 741741 (US)\n" +
@@ -261,13 +315,7 @@ EOF
         );
     }
 
-    // ─── Screen switcher ─────────────────────────────────────────────────────────
-    function switchScreen(name) {
-        Object.values(screens).forEach(s => s.classList.remove('active'));
-        setTimeout(() => screens[name].classList.add('active'), 100);
-    }
-
-    // ─── Start ───────────────────────────────────────────────────────────────────
+    // ── Start ─────────────────────────────────────────────────────────────────
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
