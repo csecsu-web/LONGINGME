@@ -56,80 +56,106 @@
         about: $('about-section')
     };
 
-    const fragmentInput    = $('fragment-input');
-    const submitBtn        = $('submit-btn');
-    const charCount        = $('char-count');
-    const confirmation     = $('confirmation');
-    const writeAnother     = $('write-another');
-    const mirrorEl         = $('mirror-message');
-    const fragmentsContainer = $('fragments-container');
-    const loadMoreBtn      = $('load-more');
+    (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/app.js b/app.js
+index 655be1e186337810cd7dc85e2e97bf4146d53445..1019cd0843ac33f6d94f9b67b07b6bda1a89fb8d 100644
+--- a/app.js
++++ b/app.js
+@@ -58,76 +58,90 @@
+ 
+     const fragmentInput    = $('fragment-input');
+     const submitBtn        = $('submit-btn');
+     const charCount        = $('char-count');
+     const confirmation     = $('confirmation');
+     const writeAnother     = $('write-another');
+     const mirrorEl         = $('mirror-message');
+     const fragmentsContainer = $('fragments-container');
+     const loadMoreBtn      = $('load-more');
+ 
+     // ─── Init ────────────────────────────────────────────────────────────────────
+     async function init() {
+         setupListeners();
+         // Small delay so "preparing space..." is visible
+         setTimeout(() => switchScreen('entry'), 900);
+     }
+ 
+     // ─── Listeners ───────────────────────────────────────────────────────────────
+     function setupListeners() {
+         document.querySelectorAll('.state-btn').forEach(btn =>
+             btn.addEventListener('click', onStateSelect));
+ 
+         document.querySelectorAll('.nav-btn').forEach(btn =>
+             btn.addEventListener('click', onNavClick));
+ 
++        document.querySelectorAll('[data-quick-nav]').forEach(btn =>
++            btn.addEventListener('click', onQuickNavigate));
++
+         fragmentInput.addEventListener('input', onInputChange);
+         submitBtn.addEventListener('click', onSubmit);
+         writeAnother.addEventListener('click', resetWrite);
+         loadMoreBtn.addEventListener('click', loadFragments);
+     }
+ 
+     // ─── State selection ─────────────────────────────────────────────────────────
+     function onStateSelect(e) {
+         selectedState = e.target.dataset.state;
+ 
+         const msg = mirrorMessages[selectedState];
+         if (msg) {
+             mirrorEl.textContent = msg;
+             mirrorEl.classList.add('visible');
+         }
+ 
+         switchScreen('main');
+         loadFragments(true);
+     }
+ 
+     // ─── Navigation ──────────────────────────────────────────────────────────────
+     function onNavClick(e) {
+         const target = e.target.id.replace('nav-', '');
++        navigateToSection(target);
++    }
++
++    function onQuickNavigate(e) {
++        const target = e.target.dataset.quickNav;
++        selectedState = selectedState || 'skip';
++        switchScreen('main');
++        navigateToSection(target);
++    }
+ 
++    function navigateToSection(target) {
+         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
-    // ─── Init ────────────────────────────────────────────────────────────────────
-    async function init() {
-        setupListeners();
-        // Small delay so "preparing space..." is visible
-        setTimeout(() => switchScreen('entry'), 900);
-    }
-
-    // ─── Listeners ───────────────────────────────────────────────────────────────
-    function setupListeners() {
-        document.querySelectorAll('.state-btn').forEach(btn =>
-            btn.addEventListener('click', onStateSelect));
-
-        document.querySelectorAll('.nav-btn').forEach(btn =>
-            btn.addEventListener('click', onNavClick));
-
-        fragmentInput.addEventListener('input', onInputChange);
-        submitBtn.addEventListener('click', onSubmit);
-        writeAnother.addEventListener('click', resetWrite);
-        loadMoreBtn.addEventListener('click', loadFragments);
-    }
-
-    // ─── State selection ─────────────────────────────────────────────────────────
-    function onStateSelect(e) {
-        selectedState = e.target.dataset.state;
-
-        const msg = mirrorMessages[selectedState];
-        if (msg) {
-            mirrorEl.textContent = msg;
-            mirrorEl.classList.add('visible');
-        }
-
-        switchScreen('main');
-        loadFragments(true);
-    }
-
-    // ─── Navigation ──────────────────────────────────────────────────────────────
-    function onNavClick(e) {
-        const target = e.target.id.replace('nav-', '');
-
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-
-        Object.keys(sections).forEach(k => sections[k].classList.remove('active'));
-        sections[target].classList.add('active');
-
-        if (target === 'read') loadFragments(true);
-    }
-
-    // ─── Input ───────────────────────────────────────────────────────────────────
-    function onInputChange() {
-        const len = fragmentInput.value.length;
-        charCount.textContent = `${len} / 500`;
-        submitBtn.disabled = len === 0;
-    }
-
-    // ─── Submit ──────────────────────────────────────────────────────────────────
-    async function onSubmit() {
-        const text = fragmentInput.value.trim();
-        if (!text) return;
-
-        if (!isSafe(text)) {
-            showCrisis();
-            return;
-        }
-
++        const activeNav = document.getElementById(`nav-${target}`);
++        if (activeNav) activeNav.classList.add('active');
+ 
+         Object.keys(sections).forEach(k => sections[k].classList.remove('active'));
+         sections[target].classList.add('active');
+ 
+         if (target === 'read') loadFragments(true);
+     }
+ 
+     // ─── Input ───────────────────────────────────────────────────────────────────
+     function onInputChange() {
+         const len = fragmentInput.value.length;
+         charCount.textContent = `${len} / 500`;
+         submitBtn.disabled = len === 0;
+     }
+ 
+     // ─── Submit ──────────────────────────────────────────────────────────────────
+     async function onSubmit() {
+         const text = fragmentInput.value.trim();
+         if (!text) return;
+ 
+         if (!isSafe(text)) {
+             showCrisis();
+             return;
+         }
+ 
+         submitBtn.disabled = true;
+ 
+EOF
+)
         submitBtn.disabled = true;
         submitBtn.textContent = 'releasing...';
 
