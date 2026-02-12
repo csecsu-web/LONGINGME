@@ -22,7 +22,11 @@
         "What would you tell yourself from a year ago?",
         "What do you keep almost saying?",
         "What does tired feel like for you?",
-        "What would it mean to let yourself rest?"
+        "What would it mean to let yourself rest?",
+        "What are you afraid to admit, even to yourself?",
+        "What do you wish you could stop feeling?",
+        "What does being okay feel like for you?",
+        "What are you grieving that no one knows about?"
     ];
 
     const dangerousPatterns = [
