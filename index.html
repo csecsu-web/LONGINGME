@@ -1,158 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longingme — A quiet space to exist.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
 
- <!DOCTYPE html>
- <html lang="en">
- <head>
-     <meta charset="UTF-8">
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>A Quiet Space</title>
-     <link rel="preconnect" href="https://fonts.googleapis.com">
-     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400&family=Work+Sans:wght@300;400&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="styles.css">
- </head>
- <body>
-     <div id="app">
-         <!-- Loading State -->
-         <div id="loading" class="screen active">
-             <div class="container">
-                 <p class="quiet-text">preparing space...</p>
-             </div>
-         </div>
- 
-         <!-- Entry Screen -->
-         <div id="entry-screen" class="screen">
-             <div class="container">
+    <!-- ── LOADING ─────────────────────────────────────────────── -->
+    <div id="loading" class="screen active">
+        <p class="loading-word">longingme</p>
+    </div>
 
-+                <header class="hero">
-+                    <h1 class="site-title">A Quiet Space</h1>
-+                    <p class="intro-text">
-+                        A quiet space to acknowledge what you cannot say out loud.<br>
-+                        Anonymous. Private. No pressure.
-+                    </p>
-+                </header>
-+
-+                <div class="quick-actions" aria-label="Main actions">
-+                    <button class="primary-link-btn" data-quick-nav="write">Write</button>
-+                    <button class="primary-link-btn secondary" data-quick-nav="read">Read</button>
-+                    <button class="primary-link-btn ghost" data-quick-nav="about">Learn more</button>
-+                </div>
-                 
-                 <div class="state-selection">
-+                    <h2 class="selection-heading">Choose a starting point (optional)</h2>
-                     <p class="selection-prompt">If it helps, you can choose what you're feeling:</p>
-                     <div class="state-options">
-                         <button class="state-btn" data-state="out-of-control">I feel out of control</button>
-                         <button class="state-btn" data-state="empty">I feel empty</button>
-                         <button class="state-btn" data-state="scared">I'm scared to let go</button>
-                         <button class="state-btn" data-state="unreal">I don't feel real</button>
-                         <button class="state-btn" data-state="overwhelmed">I'm overwhelmed</button>
-                         <button class="state-btn" data-state="unknown">I don't know what's wrong</button>
-                         <button class="state-btn skip-btn" data-state="skip">Continue without choosing</button>
-                     </div>
-                 </div>
-             </div>
-         </div>
- 
-         <!-- Main Space -->
-         <div id="main-screen" class="screen">
-             <nav class="main-nav">
+    <!-- ── HOME PAGE ──────────────────────────────────────────── -->
+    <div id="home-screen" class="screen">
 
-+                <button id="nav-write" class="nav-btn active">Write</button>
-+                <button id="nav-read" class="nav-btn">Read</button>
-+                <button id="nav-about" class="nav-btn">About</button>
-             </nav>
- 
-             <!-- Write Section -->
-             <div id="write-section" class="section active">
-                 <div class="container">
-+                    <h2 class="section-title">Write your thoughts</h2>
-+                    <p class="section-lede">You can write freely here. Your words stay anonymous.</p>
-                     <div id="mirror-message" class="mirror-message"></div>
-                     
-                     <div class="write-area">
-                         <p class="write-prompt">What needs to be said?</p>
-                         <textarea 
-                             id="fragment-input" 
-                             placeholder="You can write whatever you need to. No one will judge it."
-                             maxlength="500"></textarea>
-                         <div class="write-footer">
-                             <span id="char-count" class="char-count">0 / 500</span>
-                             <button id="submit-btn" class="submit-btn" disabled>release</button>
-                         </div>
-                     </div>
- 
-                     <div id="confirmation" class="confirmation hidden">
-+                        <p>Your thought was noted. Someone will read this.</p>
-                         <button id="write-another" class="text-btn">write another</button>
-                     </div>
-                 </div>
-             </div>
- 
-             <!-- Read Section -->
-             <div id="read-section" class="section">
-                 <div class="container">
-+                    <h2 class="section-title">Read shared thoughts</h2>
-                     <p class="section-intro">Things others have needed to say.</p>
-                     <div id="fragments-container" class="fragments-container">
-                         <p class="loading-text">loading...</p>
-                     </div>
-                     <button id="load-more" class="text-btn">see more</button>
-                 </div>
-             </div>
- 
-             <!-- About Section -->
-             <div id="about-section" class="section">
-                 <div class="container narrow">
+        <!-- Nav -->
+        <nav class="nav">
+            <span class="nav-logo">Longingme</span>
+            <div class="nav-links">
+                <button class="nav-link" data-page="write-page">Write</button>
+                <button class="nav-link" data-page="read-page">Read</button>
+                <button class="nav-link" data-page="about-page">About</button>
+                <a class="nav-link safety-link" href="#safety-section">Safety</a>
+            </div>
+        </nav>
 
-+                    <h2 class="section-title">About this space</h2>
-+                    <section class="about-block">
-+                        <h3>What this is</h3>
-+                        <p>This is a quiet space where you can acknowledge thoughts you cannot say elsewhere.</p>
-+                        <p>It is not therapy. It is not diagnosis. It is not advice.</p>
-+                        <p>It is simply a place to exist between silence and seeking help.</p>
-+                    </section>
- 
-+                    <section class="about-block">
-+                        <h3>What we protect</h3>
-+                        <ul class="about-list">
-+                            <li>You are completely anonymous here. No accounts, emails, or tracking.</li>
-+                            <li>We only keep the words you choose to share. Nothing else.</li>
-+                        </ul>
-+                    </section>
- 
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-inner">
+                <h1 class="hero-title">Longingme</h1>
+                <p class="hero-sub">A quiet space to exist.</p>
+                <div class="hero-btns">
+                    <button class="btn-primary" data-page="write-page">Write</button>
+                    <button class="btn-ghost" data-page="read-page">Read anonymously</button>
+                </div>
+                <p class="hero-crisis"><a href="#safety-section">Need urgent help?</a></p>
+            </div>
+        </section>
 
-+                    <section class="about-block">
-+                        <h3>What we cannot do</h3>
-+                        <p>This space cannot replace professional help or emergency support.</p>
-+                        <p>If you are in crisis, please reach out:</p>
-+                        <ul class="crisis-resources">
-+                            <li><strong>988 Suicide & Crisis Lifeline:</strong> Call or text 988 (US)</li>
-+                            <li><strong>Crisis Text Line:</strong> Text HOME to 741741 (US)</li>
-+                            <li><strong>International:</strong> <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></li>
-+                        </ul>
-+                    </section>
- 
+        <!-- What this is -->
+        <section class="pillars">
+            <div class="pillar">
+                <span class="pillar-icon">◦</span>
+                <h3>Private</h3>
+                <p>Your words are yours. Share only if you choose to.</p>
+            </div>
+            <div class="pillar">
+                <span class="pillar-icon">◦</span>
+                <h3>Anonymous</h3>
+                <p>No names. No exposure. No judgment.</p>
+            </div>
+            <div class="pillar">
+                <span class="pillar-icon">◦</span>
+                <h3>Gentle</h3>
+                <p>No pressure to heal. No pressure to perform.</p>
+            </div>
+        </section>
 
-+                    <section class="about-block">
-+                        <h3>Safety guidelines</h3>
-+                        <p>This space filters content that could encourage harm. This is to protect everyone here.</p>
-+                        <p>You can express pain, but not instructions or encouragement of harm.</p>
-+                    </section>
- 
-                     <div class="footer-note">
-                         <p>This is a free, independent project. No ads. No data sold. No agenda.</p>
-                         <p>Built with care for those in the in-between.</p>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
- 
-     <!-- Supabase SDK -->
-     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-     <script src="app.js"></script>
- </body>
- </html>
- 
-EOF
-)
+        <!-- Daily prompt -->
+        <section class="daily-prompt">
+            <p class="prompt-label">today's reflection</p>
+            <p class="prompt-text" id="daily-prompt-text"></p>
+        </section>
+
+        <!-- Safety section -->
+        <section class="safety-section" id="safety-section">
+            <p class="safety-title">If you're in immediate danger</p>
+            <p class="safety-body">
+                This space is not a crisis service. If you are thinking about harming yourself,
+                please reach out to someone who can help right now.
+            </p>
+            <div class="safety-links">
+                <a href="tel:988" class="safety-btn">988 (US Lifeline)</a>
+                <a href="sms:741741" class="safety-btn">Text HOME → 741741</a>
+                <a href="https://findahelpline.com" target="_blank" rel="noopener" class="safety-btn">International →</a>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>We do not sell data. We do not track you. This is a free, independent project.</p>
+            <div class="footer-links">
+                <button class="footer-link" data-page="about-page">About</button>
+                <span>·</span>
+                <button class="footer-link" data-page="about-page">Privacy</button>
+                <span>·</span>
+                <button class="footer-link" data-page="about-page">Moderation</button>
+            </div>
+        </footer>
+    </div>
+
+    <!-- ── WRITE PAGE ─────────────────────────────────────────── -->
+    <div id="write-page" class="screen">
+        <nav class="nav">
+            <button class="nav-back" data-page="home-screen">← Longingme</button>
+            <div class="nav-links">
+                <button class="nav-link" data-page="read-page">Read</button>
+            </div>
+        </nav>
+
+        <div class="page-container write-container">
+            <!-- Emotion tag selector -->
+            <div class="emotion-row">
+                <span class="emotion-label">How does this feel?</span>
+                <div class="emotion-tags">
+                    <button class="etag" data-tag="">none</button>
+                    <button class="etag" data-tag="anxiety">Anxiety</button>
+                    <button class="etag" data-tag="depression">Depression</button>
+                    <button class="etag" data-tag="grief">Grief</button>
+                    <button class="etag" data-tag="addiction">Addiction</button>
+                    <button class="etag" data-tag="identity">Identity</button>
+                    <button class="etag" data-tag="self-image">Self-image</button>
+                </div>
+            </div>
+
+            <p class="write-notice">This is for you. No one else can see this unless you choose to share.</p>
+
+            <textarea
+                id="entry-input"
+                class="entry-textarea"
+                placeholder="You can write anything here..."
+                maxlength="1000"></textarea>
+
+            <div class="write-footer-row">
+                <span id="write-char-count" class="char-count">0 / 1000</span>
+                <div class="write-actions">
+                    <button id="save-private-btn" class="btn-ghost" disabled>Save privately</button>
+                    <button id="share-anon-btn" class="btn-primary" disabled>Share anonymously</button>
+                </div>
+            </div>
+
+            <div id="write-confirmation" class="write-confirmation hidden">
+                <p class="confirm-msg">Your words are held.</p>
+                <button id="write-again-btn" class="btn-ghost">Write again</button>
+            </div>
+
+            <!-- Private entries list -->
+            <div id="private-entries-section" class="private-entries-section">
+                <h3 class="private-entries-title">Your private entries</h3>
+                <div id="private-entries-list" class="private-entries-list">
+                    <p class="empty-note">Nothing saved yet.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── READ PAGE ──────────────────────────────────────────── -->
+    <div id="read-page" class="screen">
+        <nav class="nav">
+            <button class="nav-back" data-page="home-screen">← Longingme</button>
+            <div class="nav-links">
+                <button class="nav-link" data-page="write-page">Write</button>
+            </div>
+        </nav>
+
+        <div class="page-container">
+            <p class="read-intro">Things others have needed to say.</p>
+
+            <!-- Emotion filter -->
+            <div class="filter-row">
+                <button class="filter-btn active" data-filter="">All</button>
+                <button class="filter-btn" data-filter="anxiety">Anxiety</button>
+                <button class="filter-btn" data-filter="depression">Depression</button>
+                <button class="filter-btn" data-filter="grief">Grief</button>
+                <button class="filter-btn" data-filter="addiction">Addiction</button>
+                <button class="filter-btn" data-filter="identity">Identity</button>
+                <button class="filter-btn" data-filter="self-image">Self-image</button>
+            </div>
+
+            <div id="shared-wall" class="shared-wall">
+                <p class="loading-note">loading...</p>
+            </div>
+
+            <button id="wall-load-more" class="btn-ghost load-more-btn">See more</button>
+        </div>
+    </div>
+
+    <!-- ── ABOUT PAGE ─────────────────────────────────────────── -->
+    <div id="about-page" class="screen">
+        <nav class="nav">
+            <button class="nav-back" data-page="home-screen">← Longingme</button>
+        </nav>
+
+        <div class="page-container narrow">
+            <h2>What this is</h2>
+            <p>Longingme is a quiet space for people who are struggling but are not ready for therapy, diagnosis, or labels.</p>
+            <p>It is not here to fix you. It is not here to judge you. It exists for the in-between.</p>
+
+            <h2>Privacy</h2>
+            <p>We do not collect your name, email, or any identifying information.</p>
+            <p>Private entries are stored only in your browser. Shared entries are anonymous text only — nothing else.</p>
+            <p>We do not sell data. We do not share data. We do not run ads.</p>
+
+            <h2>Moderation</h2>
+            <p>Content that instructs or encourages self-harm is filtered automatically. This is protective, not punitive.</p>
+            <p>You can express pain here. You cannot instruct others to hurt themselves.</p>
+
+            <h2>What this cannot do</h2>
+            <p>This is not a crisis service. It cannot replace professional support. If you are in danger, please contact someone who can help.</p>
+
+            <div class="about-safety">
+                <p><strong>988</strong> — Suicide & Crisis Lifeline (US)</p>
+                <p><strong>741741</strong> — Crisis Text Line (Text HOME)</p>
+                <p><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> — International</p>
+            </div>
+
+            <div class="footer-note-about">
+                <p>Built with care. Free forever.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+</body>
+</html>
