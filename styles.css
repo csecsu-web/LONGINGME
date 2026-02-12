@@ -353,6 +353,13 @@ a:hover {
     margin-bottom: var(--space-md);
 }
 
+.note-text {
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
 .text-btn {
     font-family: var(--font-body);
     font-size: 0.95rem;
