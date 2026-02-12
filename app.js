@@ -1,23 +1,17 @@
 // Longingme — app.js
-// Supabase: https://hapkolokdrzwprilmpce.supabase.co
 (function () {
     'use strict';
 
-    // ── Supabase ──────────────────────────────────────────────────────────────
     const SUPABASE_URL = 'https://hapkolokdrzwprilmpce.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_V_zCthxiaKw9jBam5Ztjgg_8SRaG8rj';
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ── Local storage key for private entries ─────────────────────────────────
     const PRIVATE_KEY = 'longingme_private';
+    let selectedTag  = '';
+    let activeFilter = '';
+    let wallOffset   = 0;
+    const PAGE_SIZE  = 10;
 
-    // ── State ─────────────────────────────────────────────────────────────────
-    let selectedTag    = '';
-    let activeFilter   = '';
-    let wallOffset     = 0;
-    const PAGE_SIZE    = 10;
-
-    // ── Daily prompts ─────────────────────────────────────────────────────────
     const dailyPrompts = [
         "What feels heavier than it looks?",
         "What would you say if no one could judge you?",
@@ -31,7 +25,6 @@
         "What would it mean to let yourself rest?"
     ];
 
-    // ── Safety ────────────────────────────────────────────────────────────────
     const dangerousPatterns = [
         /\b(\d+)\s*(pills?|tablets?|capsules?)\b/i,
         /\b(\d+)\s*(cuts?|slashes?)\b/i,
@@ -47,64 +40,49 @@
         /\bno\s+reason\s+to\s+(live|continue|go\s+on)\b/i
     ];
 
-    // ── DOM helpers ───────────────────────────────────────────────────────────
     const $ = id => document.getElementById(id);
     const $$ = sel => document.querySelectorAll(sel);
 
-    // ── Init ──────────────────────────────────────────────────────────────────
     function init() {
         setDailyPrompt();
         setupNavigation();
         setupWritePage();
         setupReadPage();
         loadPrivateEntries();
-
         setTimeout(() => switchScreen('home-screen'), 900);
     }
 
-    // ── Daily prompt ──────────────────────────────────────────────────────────
     function setDailyPrompt() {
         const idx = new Date().getDate() % dailyPrompts.length;
         const el = $('daily-prompt-text');
         if (el) el.textContent = dailyPrompts[idx];
     }
 
-    // ── Navigation ────────────────────────────────────────────────────────────
     function setupNavigation() {
-        // All buttons with data-page attribute
         document.addEventListener('click', e => {
             const target = e.target.closest('[data-page]');
             if (!target) return;
             const page = target.dataset.page;
             switchScreen(page);
-
             if (page === 'read-page') loadWall(true);
         });
     }
 
     function switchScreen(id) {
-        $$('.screen').forEach(s => s.classList.remove('active'));
+        $$('.screen').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
         const el = $(id);
-        if (el) {
-            el.style.display = 'block';
-            // Force reflow then add active
-            requestAnimationFrame(() => {
-                el.classList.add('active');
-            });
-        }
+        if (el) { el.style.display = 'block'; requestAnimationFrame(() => el.classList.add('active')); }
         window.scrollTo(0, 0);
     }
 
-    // ── Write page ────────────────────────────────────────────────────────────
     function setupWritePage() {
-        const textarea   = $('entry-input');
-        const charCount  = $('write-char-count');
-        const saveBtn    = $('save-private-btn');
-        const shareBtn   = $('share-anon-btn');
-        const confirm    = $('write-confirmation');
-        const againBtn   = $('write-again-btn');
+        const textarea  = $('entry-input');
+        const charCount = $('write-char-count');
+        const saveBtn   = $('save-private-btn');
+        const shareBtn  = $('share-anon-btn');
+        const confirm   = $('write-confirmation');
+        const againBtn  = $('write-again-btn');
 
-        // Emotion tags
         $$('.etag').forEach(btn => {
             btn.addEventListener('click', () => {
                 $$('.etag').forEach(b => b.classList.remove('active'));
@@ -113,43 +91,33 @@
             });
         });
 
-        // Textarea
         textarea.addEventListener('input', () => {
             const len = textarea.value.length;
             charCount.textContent = `${len} / 1000`;
-            const hasText = len > 0;
-            saveBtn.disabled  = !hasText;
-            shareBtn.disabled = !hasText;
+            saveBtn.disabled  = len === 0;
+            shareBtn.disabled = len === 0;
         });
 
-        // Save privately
         saveBtn.addEventListener('click', () => {
             const text = textarea.value.trim();
             if (!text) return;
-
             if (!isSafe(text)) { showCrisis(); return; }
-
             savePrivate(text);
-            showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount);
+            resetWriteArea(textarea, charCount, saveBtn, shareBtn, confirm);
         });
 
-        // Share anonymously
         shareBtn.addEventListener('click', async () => {
             const text = textarea.value.trim();
             if (!text) return;
-
             if (!isSafe(text)) { showCrisis(); return; }
-
             shareBtn.disabled = true;
             shareBtn.textContent = 'sharing...';
 
-            const { error } = await db
-                .from('entries')
-                .insert([{
-                    content:   text,
-                    is_shared: true,
-                    emotion_tag: selectedTag || null
-                }]);
+            const { error } = await db.from('fragments').insert([{
+                text:    text,
+                state:   selectedTag || 'unknown',
+                flagged: false
+            }]);
 
             if (error) {
                 console.error('Share error:', error);
@@ -158,57 +126,46 @@
                 shareBtn.textContent = 'Share anonymously';
                 return;
             }
-
-            showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount);
+            resetWriteArea(textarea, charCount, saveBtn, shareBtn, confirm);
         });
 
-        // Write again
         againBtn.addEventListener('click', () => {
             confirm.classList.add('hidden');
-            document.querySelector('.write-area') && (document.querySelector('.write-area').style.display = 'block');
             textarea.value = '';
             charCount.textContent = '0 / 1000';
-            saveBtn.disabled  = true;
+            saveBtn.disabled = true;
             shareBtn.disabled = true;
             shareBtn.textContent = 'Share anonymously';
             textarea.focus();
         });
     }
 
-    function showConfirmation(textarea, confirm, saveBtn, shareBtn, charCount) {
+    function resetWriteArea(textarea, charCount, saveBtn, shareBtn, confirm) {
         textarea.value = '';
         charCount.textContent = '0 / 1000';
-        saveBtn.disabled  = true;
+        saveBtn.disabled = true;
         shareBtn.disabled = true;
         shareBtn.textContent = 'Share anonymously';
         confirm.classList.remove('hidden');
         loadPrivateEntries();
     }
 
-    // ── Private entries (localStorage) ───────────────────────────────────────
     function savePrivate(text) {
         const entries = getPrivate();
         entries.unshift({ text, timestamp: Date.now(), tag: selectedTag });
-        // Keep max 50
         localStorage.setItem(PRIVATE_KEY, JSON.stringify(entries.slice(0, 50)));
     }
 
     function getPrivate() {
-        try {
-            return JSON.parse(localStorage.getItem(PRIVATE_KEY)) || [];
-        } catch { return []; }
+        try { return JSON.parse(localStorage.getItem(PRIVATE_KEY)) || []; }
+        catch { return []; }
     }
 
     function loadPrivateEntries() {
         const list = $('private-entries-list');
         if (!list) return;
         const entries = getPrivate();
-
-        if (entries.length === 0) {
-            list.innerHTML = '<p class="empty-note">Nothing saved yet.</p>';
-            return;
-        }
-
+        if (entries.length === 0) { list.innerHTML = '<p class="empty-note">Nothing saved yet.</p>'; return; }
         list.innerHTML = '';
         entries.forEach(e => {
             const card = document.createElement('div');
@@ -218,9 +175,7 @@
         });
     }
 
-    // ── Read / Shared Wall ────────────────────────────────────────────────────
     function setupReadPage() {
-        // Filter buttons
         $$('.filter-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 $$('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -229,7 +184,6 @@
                 loadWall(true);
             });
         });
-
         $('wall-load-more').addEventListener('click', () => loadWall(false));
     }
 
@@ -245,30 +199,26 @@
         }
 
         let query = db
-            .from('entries')
-            .select('content, emotion_tag')
-            .eq('is_shared', true)
+            .from('fragments')
+            .select('text, state')
+            .eq('flagged', false)
             .order('created_at', { ascending: false })
             .range(wallOffset, wallOffset + PAGE_SIZE - 1);
 
-        if (activeFilter) {
-            query = query.eq('emotion_tag', activeFilter);
-        }
+        if (activeFilter) query = query.eq('state', activeFilter);
 
         const { data, error } = await query;
 
         if (error) {
             console.error('Wall load error:', error);
-            wall.innerHTML = '<p class="loading-note">Could not load entries.</p>';
+            wall.innerHTML = '<p class="loading-note">Could not load. Please refresh.</p>';
             return;
         }
 
         if (reset) wall.innerHTML = '';
 
         if (!data || data.length === 0) {
-            if (wallOffset === 0) {
-                wall.innerHTML = '<p class="loading-note">Nothing here yet. Be the first to share.</p>';
-            }
+            if (wallOffset === 0) wall.innerHTML = '<p class="loading-note">Nothing here yet. Be the first to share.</p>';
             loadBtn.style.display = 'none';
             return;
         }
@@ -276,19 +226,16 @@
         data.forEach(entry => {
             const card = document.createElement('div');
             card.className = 'fragment-card';
-
             const text = document.createElement('p');
             text.className = 'fragment-text';
-            text.textContent = entry.content;
+            text.textContent = entry.text;
             card.appendChild(text);
-
-            if (entry.emotion_tag) {
+            if (entry.state && entry.state !== 'unknown') {
                 const tag = document.createElement('span');
                 tag.className = 'fragment-tag';
-                tag.textContent = entry.emotion_tag;
+                tag.textContent = entry.state;
                 card.appendChild(tag);
             }
-
             wall.appendChild(card);
         });
 
@@ -296,7 +243,6 @@
         loadBtn.style.display = data.length < PAGE_SIZE ? 'none' : 'block';
     }
 
-    // ── Safety ────────────────────────────────────────────────────────────────
     function isSafe(text) {
         for (const p of dangerousPatterns) if (p.test(text)) return false;
         for (const p of crisisPatterns)   if (p.test(text)) return false;
@@ -305,8 +251,7 @@
 
     function showCrisis() {
         alert(
-            "We understand you're struggling, but this space cannot provide " +
-            "the immediate help you may need.\n\n" +
+            "We understand you're struggling, but this space cannot provide the immediate help you may need.\n\n" +
             "If you're in crisis, please reach out:\n\n" +
             "• 988 Suicide & Crisis Lifeline: Call or text 988 (US)\n" +
             "• Crisis Text Line: Text HOME to 741741 (US)\n" +
@@ -315,11 +260,9 @@
         );
     }
 
-    // ── Start ─────────────────────────────────────────────────────────────────
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
         init();
     }
-
 })();
