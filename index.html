@@ -63,7 +63,7 @@
                             maxlength="500"></textarea>
                         <div class="write-footer">
                             <span id="char-count" class="char-count">0 / 500</span>
-                            <button id="submit-btn" class="submit-btn">release</button>
+                            <button id="submit-btn" class="submit-btn" disabled>release</button>
                         </div>
                     </div>
 
@@ -110,10 +110,6 @@
                     <p>This space filters content that could encourage harm. This is to protect everyone here.</p>
                     <p>You can express pain, but not instructions or encouragement of harm.</p>
 
-                    <h2>How it works</h2>
-                    <p>When you write, your words are stored anonymously. Others may read them. No one can reply, like, or identify you.</p>
-                    <p>This is intentional. The goal is not connection, but quiet acknowledgment.</p>
-
                     <div class="footer-note">
                         <p>This is a free, independent project. No ads. No data sold. No agenda.</p>
                         <p>Built with care for those in the in-between.</p>
@@ -123,12 +119,8 @@
         </div>
     </div>
 
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    
-    <script src="config.js"></script>
+    <!-- Supabase SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="app.js"></script>
 </body>
 </html>
