@@ -7,9 +7,22 @@
     const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const PRIVATE_KEY = 'longingme_private';
+    const ANON_ID_KEY = 'longingme_anon_id';
+
+    function getAnonId() {
+        let id = localStorage.getItem(ANON_ID_KEY);
+        if (!id) {
+            id = 'anon_' + Math.random().toString(36).substr(2, 12) + Date.now().toString(36);
+            localStorage.setItem(ANON_ID_KEY, id);
+        }
+        return id;
+    }
+    const ANON_ID = getAnonId();
+
     let selectedTag  = '';
     let activeFilter = '';
     let wallOffset   = 0;
+    let myOffset     = 0;
     const PAGE_SIZE  = 10;
 
     const dailyPrompts = [
@@ -52,6 +65,7 @@
         setupNavigation();
         setupWritePage();
         setupReadPage();
+        setupMyPage();
         loadPrivateEntries();
         setTimeout(() => switchScreen('home-screen'), 900);
     }
@@ -69,6 +83,7 @@
             const page = target.dataset.page;
             switchScreen(page);
             if (page === 'read-page') loadWall(true);
+            if (page === 'my-page')   loadMy(true);
         });
     }
 
@@ -120,7 +135,8 @@
             const { error } = await db.from('fragments').insert([{
                 text:    text,
                 state:   selectedTag || 'unknown',
-                flagged: false
+                flagged: false,
+                anon_id: ANON_ID
             }]);
 
             if (error) {
@@ -159,12 +175,10 @@
         entries.unshift({ text, timestamp: Date.now(), tag: selectedTag });
         localStorage.setItem(PRIVATE_KEY, JSON.stringify(entries.slice(0, 50)));
     }
-
     function getPrivate() {
         try { return JSON.parse(localStorage.getItem(PRIVATE_KEY)) || []; }
         catch { return []; }
     }
-
     function loadPrivateEntries() {
         const list = $('private-entries-list');
         if (!list) return;
@@ -206,7 +220,7 @@
             .from('fragments')
             .select('text, state')
             .eq('flagged', false)
-            .order('created_at', { ascending: false })
+            .order('id', { ascending: false })
             .range(wallOffset, wallOffset + PAGE_SIZE - 1);
 
         if (activeFilter) query = query.eq('state', activeFilter);
@@ -220,31 +234,72 @@
         }
 
         if (reset) wall.innerHTML = '';
-
         if (!data || data.length === 0) {
             if (wallOffset === 0) wall.innerHTML = '<p class="loading-note">Nothing here yet. Be the first to share.</p>';
             loadBtn.style.display = 'none';
             return;
         }
 
-        data.forEach(entry => {
-            const card = document.createElement('div');
-            card.className = 'fragment-card';
-            const text = document.createElement('p');
-            text.className = 'fragment-text';
-            text.textContent = entry.text;
-            card.appendChild(text);
-            if (entry.state && entry.state !== 'unknown') {
-                const tag = document.createElement('span');
-                tag.className = 'fragment-tag';
-                tag.textContent = entry.state;
-                card.appendChild(tag);
-            }
-            wall.appendChild(card);
-        });
-
+        data.forEach(entry => addFragmentCard(wall, entry.text, entry.state));
         wallOffset += data.length;
         loadBtn.style.display = data.length < PAGE_SIZE ? 'none' : 'block';
+    }
+
+    function setupMyPage() {
+        const loadBtn = $('my-load-more');
+        if (loadBtn) loadBtn.addEventListener('click', () => loadMy(false));
+    }
+
+    async function loadMy(reset = false) {
+        const container = $('my-submissions-list');
+        const loadBtn   = $('my-load-more');
+        if (!container) return;
+
+        if (reset) {
+            myOffset = 0;
+            container.innerHTML = '<p class="loading-note">loading...</p>';
+            if (loadBtn) loadBtn.style.display = 'none';
+        }
+
+        const { data, error } = await db
+            .from('fragments')
+            .select('text, state')
+            .eq('anon_id', ANON_ID)
+            .order('id', { ascending: false })
+            .range(myOffset, myOffset + PAGE_SIZE - 1);
+
+        if (error) {
+            console.error('My submissions error:', error);
+            container.innerHTML = '<p class="loading-note">Could not load. Please refresh.</p>';
+            return;
+        }
+
+        if (reset) container.innerHTML = '';
+        if (!data || data.length === 0) {
+            if (myOffset === 0) container.innerHTML = '<p class="loading-note">You haven\'t shared anything yet.</p>';
+            if (loadBtn) loadBtn.style.display = 'none';
+            return;
+        }
+
+        data.forEach(entry => addFragmentCard(container, entry.text, entry.state));
+        myOffset += data.length;
+        if (loadBtn) loadBtn.style.display = data.length < PAGE_SIZE ? 'none' : 'block';
+    }
+
+    function addFragmentCard(container, text, state) {
+        const card = document.createElement('div');
+        card.className = 'fragment-card';
+        const p = document.createElement('p');
+        p.className = 'fragment-text';
+        p.textContent = text;
+        card.appendChild(p);
+        if (state && state !== 'unknown') {
+            const tag = document.createElement('span');
+            tag.className = 'fragment-tag';
+            tag.textContent = state;
+            card.appendChild(tag);
+        }
+        container.appendChild(card);
     }
 
     function isSafe(text) {
@@ -252,7 +307,6 @@
         for (const p of crisisPatterns)   if (p.test(text)) return false;
         return true;
     }
-
     function showCrisis() {
         alert(
             "We understand you're struggling, but this space cannot provide the immediate help you may need.\n\n" +
