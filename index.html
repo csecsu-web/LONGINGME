@@ -26,6 +26,7 @@
                 <button class="nav-link" data-page="write-page">Write</button>
                 <button class="nav-link" data-page="read-page">Read</button>
                 <button class="nav-link" data-page="about-page">About</button>
+                <button class="nav-link" data-page="my-page">Mine</button>
                 <a class="nav-link safety-link" href="#safety-section">Safety</a>
             </div>
         </nav>
@@ -101,6 +102,7 @@
             <button class="nav-back" data-page="home-screen">← Longingme</button>
             <div class="nav-links">
                 <button class="nav-link" data-page="read-page">Read</button>
+                <button class="nav-link" data-page="my-page">Mine</button>
             </div>
         </nav>
 
@@ -177,6 +179,7 @@
             <button class="nav-back" data-page="home-screen">← Longingme</button>
             <div class="nav-links">
                 <button class="nav-link" data-page="write-page">Write</button>
+                <button class="nav-link" data-page="my-page">Mine</button>
             </div>
         </nav>
 
@@ -220,6 +223,27 @@
             </div>
 
             <button id="wall-load-more" class="btn-ghost load-more-btn">See more</button>
+        </div>
+    </div>
+
+
+    <!-- ── MY SUBMISSIONS PAGE ───────────────────────────────────── -->
+    <div id="my-page" class="screen">
+        <nav class="nav">
+            <button class="nav-back" data-page="home-screen">← Longingme</button>
+            <div class="nav-links">
+                <button class="nav-link" data-page="write-page">Write</button>
+                <button class="nav-link" data-page="read-page">Read</button>
+            </div>
+        </nav>
+
+        <div class="page-container">
+            <p class="read-intro">What you have shared.</p>
+            <p class="my-page-note">These are your anonymous submissions from this browser. No one can see these are yours.</p>
+            <div id="my-submissions-list" class="shared-wall">
+                <p class="loading-note">loading...</p>
+            </div>
+            <button id="my-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
         </div>
     </div>
 
