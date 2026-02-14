@@ -3,287 +3,342 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Longingme — A quiet space to exist.</title>
+    <title>Longingme — You can put it down here.</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- ── LOADING ─────────────────────────────────────────────── -->
-    <div id="loading" class="screen active">
+<!-- Crisis bar -->
+<div class="crisis-bar">
+    <span>Need urgent help?</span>
+    <a href="tel:988">988</a>·
+    <a href="sms:741741">Text HOME → 741741</a>·
+    <a href="https://findahelpline.com" target="_blank" rel="noopener">International</a>
+</div>
+
+<!-- ── LOADING ─────────────────────────────────────────────────── -->
+<div id="loading" class="screen active">
+    <div class="loading-inner">
         <p class="loading-word">longingme</p>
+        <p class="loading-sub">finding a quiet place...</p>
     </div>
+</div>
 
-    <!-- ── HOME PAGE ──────────────────────────────────────────── -->
-    <div id="home-screen" class="screen">
+<!-- ── LANDING ────────────────────────────────────────────────── -->
+<div id="landing" class="screen">
+    <div class="landing-wrap">
+        <p class="landing-eyebrow">a private space for what's hard to say</p>
+        <h1 class="landing-title">You can put it<br><em>down here.</em></h1>
+        <p class="landing-sub">No fixing. No labels. No judgment.<br>Just you, and what you're carrying.</p>
 
-        <!-- Nav -->
-        <nav class="nav">
-            <span class="nav-logo">Longingme</span>
-            <div class="nav-links">
-                <button class="nav-link" data-page="write-page">Write</button>
-                <button class="nav-link" data-page="read-page">Read</button>
-                <button class="nav-link" data-page="about-page">About</button>
-                <button class="nav-link" data-page="my-page">Mine</button>
-                <a class="nav-link safety-link" href="#safety-section">Safety</a>
-            </div>
-        </nav>
+        <div class="landing-actions">
+            <button class="action-card" data-page="write-page">
+                <span class="action-icon">○</span>
+                <span class="action-title">Release something</span>
+                <span class="action-desc">Write what you can't say out loud</span>
+            </button>
+            <button class="action-card" data-page="paths-page">
+                <span class="action-icon">○</span>
+                <span class="action-title">Explore yourself</span>
+                <span class="action-desc">Guided paths for understanding yourself</span>
+            </button>
+            <button class="action-card" data-page="read-page">
+                <span class="action-icon">○</span>
+                <span class="action-title">Know I'm not alone</span>
+                <span class="action-desc">Read what others have shared</span>
+            </button>
+            <button class="action-card" data-page="ground-page">
+                <span class="action-icon">○</span>
+                <span class="action-title">Just breathe</span>
+                <span class="action-desc">A quiet moment to come back to yourself</span>
+            </button>
+        </div>
 
-        <!-- Hero -->
-        <section class="hero">
-            <div class="hero-inner">
-                <h1 class="hero-title">Longingme</h1>
-                <p class="hero-sub">A quiet space to exist.</p>
-                <div class="hero-btns">
-                    <button class="btn-primary" data-page="write-page">Write</button>
-                    <button class="btn-ghost" data-page="read-page">Read anonymously</button>
-                </div>
-                <p class="hero-crisis"><a href="#safety-section">Need urgent help?</a></p>
-            </div>
-        </section>
+        <button class="landing-skip" data-page="write-page">I just need to write →</button>
 
-        <!-- What this is -->
-        <section class="pillars">
-            <div class="pillar">
-                <span class="pillar-icon">◦</span>
-                <h3>Private</h3>
-                <p>Your words are yours. Share only if you choose to.</p>
-            </div>
-            <div class="pillar">
-                <span class="pillar-icon">◦</span>
-                <h3>Anonymous</h3>
-                <p>No names. No exposure. No judgment.</p>
-            </div>
-            <div class="pillar">
-                <span class="pillar-icon">◦</span>
-                <h3>Gentle</h3>
-                <p>No pressure to heal. No pressure to perform.</p>
-            </div>
-        </section>
-
-        <!-- Daily prompt -->
-        <section class="daily-prompt">
-            <p class="prompt-label">today's reflection</p>
-            <p class="prompt-text" id="daily-prompt-text"></p>
-        </section>
-
-        <!-- Safety section -->
-        <section class="safety-section" id="safety-section">
-            <p class="safety-title">If you're in immediate danger</p>
-            <p class="safety-body">
-                This space is not a crisis service. If you are thinking about harming yourself,
-                please reach out to someone who can help right now.
-            </p>
-            <div class="safety-links">
-                <a href="tel:988" class="safety-btn">988 (US Lifeline)</a>
-                <a href="sms:741741" class="safety-btn">Text HOME → 741741</a>
-                <a href="https://findahelpline.com" target="_blank" rel="noopener" class="safety-btn">International →</a>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <p>We do not sell data. We do not track you. This is a free, independent project.</p>
-            <div class="footer-links">
-                <button class="footer-link" data-page="about-page">About</button>
-                <span>·</span>
-                <button class="footer-link" data-page="about-page">Privacy</button>
-                <span>·</span>
-                <button class="footer-link" data-page="about-page">Moderation</button>
-            </div>
-        </footer>
+        <div class="landing-footer">
+            <button class="footer-link" data-page="about-page">About</button>
+            <span>·</span>
+            <button class="footer-link" data-page="my-page">My entries</button>
+        </div>
     </div>
+</div>
 
-    <!-- ── WRITE PAGE ─────────────────────────────────────────── -->
-    <div id="write-page" class="screen">
-        <nav class="nav">
-            <button class="nav-back" data-page="home-screen">← Longingme</button>
-            <div class="nav-links">
-                <button class="nav-link" data-page="read-page">Read</button>
-                <button class="nav-link" data-page="my-page">Mine</button>
+<!-- ── WRITE PAGE ─────────────────────────────────────────────── -->
+<div id="write-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+        <div class="nav-links">
+            <button class="nav-link" data-page="read-page">Read</button>
+            <button class="nav-link" data-page="my-page">Mine</button>
+            <button class="nav-link glow-link" data-page="ground-page">Breathe</button>
+        </div>
+    </nav>
+
+    <div class="write-wrap">
+        <div class="companion-greeting" id="companion-greeting">
+            <span class="companion-dot"></span>
+            <p id="companion-text">I'm here with you.</p>
+        </div>
+
+        <!-- Emotion tags -->
+        <div class="field-group">
+            <label class="field-label">What does this feel like?</label>
+            <div class="tag-cloud">
+                <button class="etag active" data-tag="">none</button>
+                <button class="etag" data-tag="anxiety">Anxiety</button>
+                <button class="etag" data-tag="depression">Depression</button>
+                <button class="etag" data-tag="grief">Grief</button>
+                <button class="etag" data-tag="addiction">Addiction</button>
+                <button class="etag" data-tag="identity">Identity</button>
+                <button class="etag" data-tag="self-image">Self-image</button>
+                <button class="etag" data-tag="loneliness">Loneliness</button>
+                <button class="etag" data-tag="trauma">Trauma</button>
+                <button class="etag" data-tag="anger">Anger</button>
+                <button class="etag" data-tag="numbness">Numbness</button>
+                <button class="etag" data-tag="burnout">Burnout</button>
+                <button class="etag" data-tag="fear">Fear</button>
+                <button class="etag" data-tag="shame">Shame</button>
+                <button class="etag" data-tag="loss">Loss</button>
+                <button class="etag" data-tag="relationships">Relationships</button>
+                <button class="etag" data-tag="self-harm">Self-harm</button>
+                <button class="etag" data-tag="eating">Eating</button>
+                <button class="etag" data-tag="sleep">Sleep</button>
+                <button class="etag" data-tag="dissociation">Dissociation</button>
+                <button class="etag" data-tag="ocd">OCD</button>
+                <button class="etag" data-tag="ptsd">PTSD</button>
+                <button class="etag" data-tag="bipolar">Bipolar</button>
+                <button class="etag" data-tag="worthlessness">Worthlessness</button>
+                <button class="etag" data-tag="isolation">Isolation</button>
+                <button class="etag" data-tag="confusion">Confusion</button>
+                <button class="etag" data-tag="emptiness">Emptiness</button>
+                <button class="etag" data-tag="control">Control</button>
+                <button class="etag" data-tag="self-worth">Self-worth</button>
             </div>
-        </nav>
+        </div>
 
-        <div class="page-container write-container">
-            <!-- Emotion tag selector -->
-            <div class="emotion-row">
-                <span class="emotion-label">How does this feel?</span>
-                <div class="emotion-tags">
-                    <button class="etag" data-tag="">none</button>
-                    <button class="etag" data-tag="anxiety">Anxiety</button>
-                    <button class="etag" data-tag="depression">Depression</button>
-                    <button class="etag" data-tag="grief">Grief</button>
-                    <button class="etag" data-tag="addiction">Addiction</button>
-                    <button class="etag" data-tag="identity">Identity</button>
-                    <button class="etag" data-tag="self-image">Self-image</button>
-                    <button class="etag" data-tag="loneliness">Loneliness</button>
-                    <button class="etag" data-tag="trauma">Trauma</button>
-                    <button class="etag" data-tag="anger">Anger</button>
-                    <button class="etag" data-tag="numbness">Numbness</button>
-                    <button class="etag" data-tag="burnout">Burnout</button>
-                    <button class="etag" data-tag="fear">Fear</button>
-                    <button class="etag" data-tag="shame">Shame</button>
-                    <button class="etag" data-tag="loss">Loss</button>
-                    <button class="etag" data-tag="relationships">Relationships</button>
-                    <button class="etag" data-tag="self-harm">Self-harm</button>
-                    <button class="etag" data-tag="eating">Eating</button>
-                    <button class="etag" data-tag="sleep">Sleep</button>
-                    <button class="etag" data-tag="dissociation">Dissociation</button>
-                    <button class="etag" data-tag="ocd">OCD</button>
-                    <button class="etag" data-tag="ptsd">PTSD</button>
-                    <button class="etag" data-tag="bipolar">Bipolar</button>
-                    <button class="etag" data-tag="psychosis">Psychosis</button>
-                    <button class="etag" data-tag="worthlessness">Worthlessness</button>
-                    <button class="etag" data-tag="isolation">Isolation</button>
-                    <button class="etag" data-tag="confusion">Confusion</button>
-                    <button class="etag" data-tag="emptiness">Emptiness</button>
-                </div>
+        <!-- Textarea -->
+        <div class="textarea-wrap">
+            <textarea id="entry-input" class="entry-textarea" placeholder="Write whatever you need to. Nothing will judge you here." maxlength="1000"></textarea>
+            <button class="pause-inline-btn" id="pause-btn">pause · breathe</button>
+        </div>
+        <div class="write-meta">
+            <span id="write-char-count" class="char-count">0 / 1000</span>
+            <div class="write-actions">
+                <button id="save-private-btn" class="btn-ghost" disabled>Save privately</button>
+                <button id="share-anon-btn" class="btn-primary" disabled>Share anonymously</button>
             </div>
+        </div>
 
-            <p class="write-notice">This is for you. No one else can see this unless you choose to share.</p>
-
-            <textarea
-                id="entry-input"
-                class="entry-textarea"
-                placeholder="You can write anything here..."
-                maxlength="1000"></textarea>
-
-            <div class="write-footer-row">
-                <span id="write-char-count" class="char-count">0 / 1000</span>
-                <div class="write-actions">
-                    <button id="save-private-btn" class="btn-ghost" disabled>Save privately</button>
-                    <button id="share-anon-btn" class="btn-primary" disabled>Share anonymously</button>
-                </div>
+        <!-- Companion response after submit -->
+        <div id="companion-response" class="companion-response hidden">
+            <div class="companion-bubble">
+                <span class="companion-dot"></span>
+                <p id="companion-response-text"></p>
             </div>
-
-            <div id="write-confirmation" class="write-confirmation hidden">
-                <p class="confirm-msg">Your words are held.</p>
-                <button id="write-again-btn" class="btn-ghost">Write again</button>
+            <p class="confirm-affirmation" id="confirm-affirmation"></p>
+            <div class="post-submit-actions">
+                <button id="reflect-btn" class="btn-ghost-sm">Reflect on this</button>
+                <button id="write-again-btn" class="btn-ghost-sm">Write again</button>
             </div>
+        </div>
 
-            <!-- Private entries list -->
-            <div id="private-entries-section" class="private-entries-section">
-                <h3 class="private-entries-title">Your private entries</h3>
-                <div id="private-entries-list" class="private-entries-list">
-                    <p class="empty-note">Nothing saved yet.</p>
-                </div>
+        <!-- Reflection questions -->
+        <div id="reflect-section" class="reflect-section hidden">
+            <p class="reflect-label">Gentle questions, if you'd like:</p>
+            <div id="reflect-questions" class="reflect-questions"></div>
+            <button id="reflect-close" class="text-link">Close</button>
+        </div>
+
+        <!-- Private saved -->
+        <div class="private-saved-section" id="private-saved-section">
+            <p class="section-label">Saved privately</p>
+            <div id="private-entries-list"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ── GUIDED PATHS ────────────────────────────────────────────── -->
+<div id="paths-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+    </nav>
+    <div class="page-container">
+        <p class="page-title">Guided Paths</p>
+        <p class="page-sub">Optional tracks to understand yourself better. No deadlines. No pressure. Start and stop whenever you need.</p>
+
+        <div class="paths-grid">
+            <button class="path-card" data-path="anxiety">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Understanding My Anxiety</span>
+                <span class="path-desc">4 weeks of gentle exploration</span>
+            </button>
+            <button class="path-card" data-path="control">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Breaking Control Patterns</span>
+                <span class="path-desc">Understand where control comes from</span>
+            </button>
+            <button class="path-card" data-path="selfworth">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Self-Worth</span>
+                <span class="path-desc">Coming back to yourself</span>
+            </button>
+            <button class="path-card" data-path="emotions">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Emotional Regulation</span>
+                <span class="path-desc">Making sense of what you feel</span>
+            </button>
+            <button class="path-card" data-path="addiction">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Addiction & Urges</span>
+                <span class="path-desc">Understanding the pull, without shame</span>
+            </button>
+            <button class="path-card" data-path="identity">
+                <span class="path-icon">◌</span>
+                <span class="path-name">Identity & Self-Discovery</span>
+                <span class="path-desc">Who you are when no one is watching</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ── PATH DETAIL ─────────────────────────────────────────────── -->
+<div id="path-detail" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="paths-page">← Paths</button>
+    </nav>
+    <div class="page-container">
+        <p class="path-detail-name" id="path-detail-name"></p>
+        <p class="path-detail-sub" id="path-detail-sub"></p>
+        <div class="path-weeks" id="path-weeks"></div>
+    </div>
+</div>
+
+<!-- ── READ PAGE ──────────────────────────────────────────────── -->
+<div id="read-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+        <div class="nav-links">
+            <button class="nav-link" data-page="write-page">Write</button>
+        </div>
+    </nav>
+    <div class="page-container">
+        <p class="page-title">Things others have needed to say.</p>
+        <p class="page-sub">You are not the only one carrying something heavy.</p>
+        <div class="filter-row">
+            <button class="filter-btn active" data-filter="">All</button>
+            <button class="filter-btn" data-filter="anxiety">Anxiety</button>
+            <button class="filter-btn" data-filter="depression">Depression</button>
+            <button class="filter-btn" data-filter="grief">Grief</button>
+            <button class="filter-btn" data-filter="loneliness">Loneliness</button>
+            <button class="filter-btn" data-filter="trauma">Trauma</button>
+            <button class="filter-btn" data-filter="anger">Anger</button>
+            <button class="filter-btn" data-filter="numbness">Numbness</button>
+            <button class="filter-btn" data-filter="shame">Shame</button>
+            <button class="filter-btn" data-filter="fear">Fear</button>
+            <button class="filter-btn" data-filter="burnout">Burnout</button>
+            <button class="filter-btn" data-filter="loss">Loss</button>
+            <button class="filter-btn" data-filter="addiction">Addiction</button>
+            <button class="filter-btn" data-filter="identity">Identity</button>
+            <button class="filter-btn" data-filter="emptiness">Emptiness</button>
+            <button class="filter-btn" data-filter="worthlessness">Worthlessness</button>
+        </div>
+        <div id="shared-wall" class="shared-wall"><p class="loading-note">loading...</p></div>
+        <button id="wall-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
+    </div>
+</div>
+
+<!-- ── MY PAGE ────────────────────────────────────────────────── -->
+<div id="my-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+    </nav>
+    <div class="page-container">
+        <p class="page-title">What you have shared.</p>
+        <p class="page-sub">Only visible in this browser. No one else can see these are yours.</p>
+
+        <!-- Pattern reflection -->
+        <div id="pattern-section" class="pattern-section hidden">
+            <p class="pattern-label">Pattern reflection</p>
+            <div id="pattern-text" class="pattern-text"></div>
+        </div>
+
+        <div id="my-submissions-list" class="shared-wall"><p class="loading-note">loading...</p></div>
+        <button id="my-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
+    </div>
+</div>
+
+<!-- ── GROUNDING ──────────────────────────────────────────────── -->
+<div id="ground-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+    </nav>
+    <div class="ground-wrap">
+        <p class="ground-message-text" id="ground-message-text"></p>
+
+        <div class="breath-area">
+            <div class="breath-ring" id="breath-ring"></div>
+            <div class="breath-info">
+                <p class="breath-phase" id="breath-phase">·</p>
+                <p class="breath-num" id="breath-num"></p>
+            </div>
+        </div>
+        <button class="breath-toggle" id="breath-toggle">Begin</button>
+
+        <div class="ground-54321">
+            <p class="ground-54321-title">5 · 4 · 3 · 2 · 1 Grounding</p>
+            <div class="steps-list">
+                <div class="step-row"><span class="step-n">5</span><span>things you can <em>see</em></span></div>
+                <div class="step-row"><span class="step-n">4</span><span>things you can <em>touch</em></span></div>
+                <div class="step-row"><span class="step-n">3</span><span>things you can <em>hear</em></span></div>
+                <div class="step-row"><span class="step-n">2</span><span>things you can <em>smell</em></span></div>
+                <div class="step-row"><span class="step-n">1</span><span>thing you can <em>taste</em></span></div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- ── READ PAGE ──────────────────────────────────────────── -->
-    <div id="read-page" class="screen">
-        <nav class="nav">
-            <button class="nav-back" data-page="home-screen">← Longingme</button>
-            <div class="nav-links">
-                <button class="nav-link" data-page="write-page">Write</button>
-                <button class="nav-link" data-page="my-page">Mine</button>
-            </div>
-        </nav>
+<!-- ── ABOUT ──────────────────────────────────────────────────── -->
+<div id="about-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+    </nav>
+    <div class="page-container narrow">
+        <p class="page-title">What this is</p>
+        <p>Longingme exists for people who are struggling but not ready for therapy, diagnosis, or labels. It is a space for the in-between — where something is wrong but words for it are still forming.</p>
+        <p>It is not here to fix you. It is here to hold what you bring to it.</p>
 
-        <div class="page-container">
-            <p class="read-intro">Things others have needed to say.</p>
+        <p class="section-label" style="margin-top:2rem">Privacy</p>
+        <p>No accounts. No emails. No tracking. Private entries never leave your browser. Shared entries are anonymous text only.</p>
+        <p>We do not sell data. We do not run ads. We do not share anything.</p>
 
-            <!-- Emotion filter -->
-            <div class="filter-row">
-                <button class="filter-btn active" data-filter="">All</button>
-                <button class="filter-btn" data-filter="anxiety">Anxiety</button>
-                <button class="filter-btn" data-filter="depression">Depression</button>
-                <button class="filter-btn" data-filter="grief">Grief</button>
-                <button class="filter-btn" data-filter="addiction">Addiction</button>
-                <button class="filter-btn" data-filter="identity">Identity</button>
-                <button class="filter-btn" data-filter="self-image">Self-image</button>
-                <button class="filter-btn" data-filter="loneliness">Loneliness</button>
-                <button class="filter-btn" data-filter="trauma">Trauma</button>
-                <button class="filter-btn" data-filter="anger">Anger</button>
-                <button class="filter-btn" data-filter="numbness">Numbness</button>
-                <button class="filter-btn" data-filter="burnout">Burnout</button>
-                <button class="filter-btn" data-filter="fear">Fear</button>
-                <button class="filter-btn" data-filter="shame">Shame</button>
-                <button class="filter-btn" data-filter="loss">Loss</button>
-                <button class="filter-btn" data-filter="relationships">Relationships</button>
-                <button class="filter-btn" data-filter="self-harm">Self-harm</button>
-                <button class="filter-btn" data-filter="eating">Eating</button>
-                <button class="filter-btn" data-filter="sleep">Sleep</button>
-                <button class="filter-btn" data-filter="dissociation">Dissociation</button>
-                <button class="filter-btn" data-filter="ocd">OCD</button>
-                <button class="filter-btn" data-filter="ptsd">PTSD</button>
-                <button class="filter-btn" data-filter="bipolar">Bipolar</button>
-                <button class="filter-btn" data-filter="psychosis">Psychosis</button>
-                <button class="filter-btn" data-filter="worthlessness">Worthlessness</button>
-                <button class="filter-btn" data-filter="isolation">Isolation</button>
-                <button class="filter-btn" data-filter="confusion">Confusion</button>
-                <button class="filter-btn" data-filter="emptiness">Emptiness</button>
-            </div>
+        <p class="section-label" style="margin-top:2rem">Safety</p>
+        <p>Content that instructs or encourages self-harm is filtered automatically. You can express pain here. You cannot instruct others to hurt themselves.</p>
 
-            <div id="shared-wall" class="shared-wall">
-                <p class="loading-note">loading...</p>
-            </div>
-
-            <button id="wall-load-more" class="btn-ghost load-more-btn">See more</button>
+        <p class="section-label" style="margin-top:2rem">If you need help now</p>
+        <div class="about-crisis">
+            <p><strong>988</strong> — Suicide & Crisis Lifeline (US)</p>
+            <p><strong>741741</strong> — Crisis Text Line (text HOME)</p>
+            <p><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> — International</p>
         </div>
+        <p class="about-footer">Free forever. You are not broken.</p>
     </div>
+</div>
 
-
-    <!-- ── MY SUBMISSIONS PAGE ───────────────────────────────────── -->
-    <div id="my-page" class="screen">
-        <nav class="nav">
-            <button class="nav-back" data-page="home-screen">← Longingme</button>
-            <div class="nav-links">
-                <button class="nav-link" data-page="write-page">Write</button>
-                <button class="nav-link" data-page="read-page">Read</button>
-            </div>
-        </nav>
-
-        <div class="page-container">
-            <p class="read-intro">What you have shared.</p>
-            <p class="my-page-note">These are your anonymous submissions from this browser. No one can see these are yours.</p>
-            <div id="my-submissions-list" class="shared-wall">
-                <p class="loading-note">loading...</p>
-            </div>
-            <button id="my-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
-        </div>
+<!-- Pause modal -->
+<div id="pause-modal" class="pause-modal hidden">
+    <div class="pause-inner">
+        <p class="pause-word">breathe</p>
+        <div class="pause-ring" id="pause-ring"></div>
+        <p class="pause-label" id="pause-label">in</p>
+        <button class="btn-ghost" id="pause-close">Return to writing</button>
     </div>
+</div>
 
-    <!-- ── ABOUT PAGE ─────────────────────────────────────────── -->
-    <div id="about-page" class="screen">
-        <nav class="nav">
-            <button class="nav-back" data-page="home-screen">← Longingme</button>
-        </nav>
-
-        <div class="page-container narrow">
-            <h2>What this is</h2>
-            <p>Longingme is a quiet space for people who are struggling but are not ready for therapy, diagnosis, or labels.</p>
-            <p>It is not here to fix you. It is not here to judge you. It exists for the in-between.</p>
-
-            <h2>Privacy</h2>
-            <p>We do not collect your name, email, or any identifying information.</p>
-            <p>Private entries are stored only in your browser. Shared entries are anonymous text only — nothing else.</p>
-            <p>We do not sell data. We do not share data. We do not run ads.</p>
-
-            <h2>Moderation</h2>
-            <p>Content that instructs or encourages self-harm is filtered automatically. This is protective, not punitive.</p>
-            <p>You can express pain here. You cannot instruct others to hurt themselves.</p>
-
-            <h2>What this cannot do</h2>
-            <p>This is not a crisis service. It cannot replace professional support. If you are in danger, please contact someone who can help.</p>
-
-            <div class="about-safety">
-                <p><strong>988</strong> — Suicide & Crisis Lifeline (US)</p>
-                <p><strong>741741</strong> — Crisis Text Line (Text HOME)</p>
-                <p><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> — International</p>
-            </div>
-
-            <div class="footer-note-about">
-                <p>Built with care. Free forever.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Supabase -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js"></script>
 </body>
 </html>
