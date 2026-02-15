@@ -3,7 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Longingme — You can put it down here.</title>
+
+    <!-- Primary SEO -->
+    <title>Longingme — A place to say what you can't say out loud</title>
+    <meta name="description" content="Longingme is a shame-free, anonymous space to acknowledge what hurts — without being fixed, judged, or analyzed. Write privately or share anonymously. No accounts. No ads. Free forever.">
+    <meta name="keywords" content="anonymous mental health, emotional support, write anonymously, mental health journal, shame free space, emotional release, anxiety support, depression support, anonymous writing">
+    <meta name="author" content="Longingme">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://csecsu-web.github.io/LONGINGME/">
+
+    <!-- Open Graph (Facebook, LinkedIn, WhatsApp) -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://csecsu-web.github.io/LONGINGME/">
+    <meta property="og:title" content="Longingme — A place to say what you can't say out loud">
+    <meta property="og:description" content="A shame-free, anonymous space to acknowledge what hurts. No fixing. No judgment. No accounts. Just space to say what you've been holding in.">
+    <meta property="og:image" content="https://csecsu-web.github.io/LONGINGME/og-image.png">
+    <meta property="og:site_name" content="Longingme">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:url" content="https://csecsu-web.github.io/LONGINGME/">
+    <meta name="twitter:title" content="Longingme — A place to say what you can't say out loud">
+    <meta name="twitter:description" content="A shame-free, anonymous space to acknowledge what hurts. No fixing. No judgment. No accounts.">
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#141210">
+    <meta name="color-scheme" content="dark">
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Longingme",
+      "url": "https://csecsu-web.github.io/LONGINGME/",
+      "description": "A shame-free anonymous space to acknowledge what hurts — without being fixed, judged, or analyzed.",
+      "keywords": "anonymous mental health, emotional support, anonymous writing, shame free space"
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -31,38 +69,46 @@
 <!-- ── LANDING ────────────────────────────────────────────────── -->
 <div id="landing" class="screen">
     <div class="landing-wrap" id="main-content">
-        <p class="landing-eyebrow">a private space for what's hard to say</p>
-        <h1 class="landing-title">You can put it<br><em>down here.</em></h1>
-        <p class="landing-sub">No fixing. No labels. No judgment.<br>Just you, and what you're carrying.</p>
+        <p class="landing-eyebrow">no accounts · no ads · no judgment</p>
+        <h1 class="landing-title">You don't have to<br><em>be okay here.</em></h1>
+
+        <div class="landing-clarify">
+            <p>This is not therapy.</p>
+            <p>This is not social media.</p>
+            <p>This is not self-improvement.</p>
+            <p class="clarify-this">This is a quiet place to acknowledge what hurts.</p>
+        </div>
 
         <p class="landing-section-label">What do you need right now?</p>
-        <div class="landing-section-label" aria-hidden="true"></div>
         <div class="landing-actions">
             <button class="action-card" data-page="write-page">
                 <span class="action-icon">○</span>
-                <span class="action-title">Release something</span>
-                <span class="action-desc">Write what you can't say out loud</span>
+                <span class="action-title">Write it. Release it.</span>
+                <span class="action-desc">Say what you've been holding in</span>
             </button>
             <button class="action-card" data-page="paths-page">
                 <span class="action-icon">○</span>
-                <span class="action-title">Explore yourself</span>
-                <span class="action-desc">Guided paths for understanding yourself</span>
+                <span class="action-title">Explore yourself gently</span>
+                <span class="action-desc">Guided paths — no deadlines, no pressure</span>
             </button>
             <button class="action-card" data-page="read-page">
                 <span class="action-icon">○</span>
                 <span class="action-title">Know I'm not alone</span>
-                <span class="action-desc">Read what others have shared</span>
+                <span class="action-desc">Read what others have needed to say</span>
             </button>
             <button class="action-card" data-page="ground-page">
                 <span class="action-icon">○</span>
-                <span class="action-title">Just breathe</span>
-                <span class="action-desc">A quiet moment to come back to yourself</span>
+                <span class="action-title">Just sit here for a moment</span>
+                <span class="action-desc">Breathe. You don't have to do anything.</span>
             </button>
         </div>
 
+        <p class="landing-permission">You're allowed to feel this.</p>
         <button class="landing-skip" data-page="write-page">I just need to write →</button>
 
         <div class="landing-footer">
+            <button class="footer-link" data-page="philosophy-page">Why this exists</button>
+            <span>·</span>
             <button class="footer-link" data-page="about-page">About</button>
             <span>·</span>
             <button class="footer-link" data-page="my-page">My entries</button>
@@ -123,6 +169,23 @@
             </div>
         </div>
 
+        <!-- Whisper prompts -->
+        <div class="field-group">
+            <span class="whisper-label">Or start with one of these...</span>
+            <div class="whisper-prompts" id="whisper-prompts">
+                <button class="whisper-prompt">What feels heavier than it looks?</button>
+                <button class="whisper-prompt">What are you pretending is okay?</button>
+                <button class="whisper-prompt">What do you wish someone understood?</button>
+                <button class="whisper-prompt">What have you been carrying alone?</button>
+                <button class="whisper-prompt">What does tired feel like for you?</button>
+                <button class="whisper-prompt">What are you afraid to admit?</button>
+                <button class="whisper-prompt">What would you say if no one could judge you?</button>
+                <button class="whisper-prompt">What do you keep almost saying?</button>
+            </div>
+        </div>
+
+        <p class="regulation-cue" id="regulation-cue">Take one slow breath before you begin.</p>
+
         <!-- Textarea -->
         <div class="textarea-wrap">
             <textarea id="entry-input" class="entry-textarea" placeholder="Write whatever you need to. Nothing will judge you here." maxlength="1000"></textarea>
@@ -160,6 +223,14 @@
         <div class="private-saved-section" id="private-saved-section">
             <p class="section-label">Saved privately</p>
             <div id="private-entries-list"></div>
+        </div>
+
+        <!-- Something small -->
+        <div class="something-small">
+            <span class="something-small-label">Something small</span>
+            <p>Not gratitude. Not positivity. Just — is there anything, however small, that kept you going today?</p>
+            <textarea class="something-small-input" id="small-input" placeholder="A smell. A song. A moment. Nothing has to mean anything." maxlength="300" rows="3"></textarea>
+            <button class="btn-ghost-sm small-save-btn" id="small-save-btn">Save privately</button>
         </div>
     </div>
 </div>
@@ -314,26 +385,75 @@
 <div id="about-page" class="screen">
     <nav class="nav">
         <button class="nav-back" data-page="landing">← Longingme</button>
+        <div class="nav-links">
+            <button class="nav-link" data-page="philosophy-page">Why this exists</button>
+        </div>
     </nav>
     <div class="page-container narrow">
-        <p class="page-title">What this is</p>
+        <div class="page-header">
+            <p class="page-title">About Longingme</p>
+            <p class="page-sub">A shame-free space to acknowledge what hurts — without being fixed, judged, or analyzed.</p>
+        </div>
+
+        <p class="section-label">What this is</p>
         <p>Longingme exists for people who are struggling but not ready for therapy, diagnosis, or labels. It is a space for the in-between — where something is wrong but words for it are still forming.</p>
-        <p>It is not here to fix you. It is here to hold what you bring to it.</p>
+        <p>It is not here to fix you. It is not here to advise you. It is here to hold what you bring to it.</p>
+
+        <p class="section-label" style="margin-top:2rem">What this is not</p>
+        <p>Not therapy. Not self-improvement. Not social media. Not a crisis service. Not a productivity tool. Not a place where you need to perform healing.</p>
 
         <p class="section-label" style="margin-top:2rem">Privacy</p>
-        <p>No accounts. No emails. No tracking. Private entries never leave your browser. Shared entries are anonymous text only.</p>
-        <p>We do not sell data. We do not run ads. We do not share anything.</p>
+        <p>No accounts. No emails. No tracking. Private entries never leave your browser. Shared entries are anonymous text only — nothing else is stored alongside them.</p>
+        <p>We do not sell data. We do not run ads. We do not share anything. Ever.</p>
 
-        <p class="section-label" style="margin-top:2rem">Safety</p>
+        <p class="section-label" style="margin-top:2rem">Moderation</p>
         <p>Content that instructs or encourages self-harm is filtered automatically. You can express pain here. You cannot instruct others to hurt themselves.</p>
 
         <p class="section-label" style="margin-top:2rem">If you need help now</p>
         <div class="about-crisis">
-            <p><strong>988</strong> — Suicide & Crisis Lifeline (US)</p>
+            <p><strong>988</strong> — Suicide & Crisis Lifeline (US, call or text)</p>
             <p><strong>741741</strong> — Crisis Text Line (text HOME)</p>
-            <p><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> — International</p>
+            <p><a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> — International directory</p>
         </div>
-        <p class="about-footer">Free forever. You are not broken.</p>
+        <p class="about-footer">Free forever. Come back anytime. This space will be here.</p>
+    </div>
+</div>
+
+<!-- ── PHILOSOPHY ─────────────────────────────────────────────── -->
+<div id="philosophy-page" class="screen">
+    <nav class="nav">
+        <button class="nav-back" data-page="landing">← Longingme</button>
+    </nav>
+    <div class="page-container narrow">
+        <div class="page-header">
+            <p class="page-title">Why this exists</p>
+            <p class="page-sub">The thinking behind Longingme.</p>
+        </div>
+
+        <div class="philosophy-block">
+        <p class="section-label">The problem</p>
+        <p>There is a space between "I'm fine" and "I need therapy" where most people live most of the time.</p>
+        <p>In that space, feelings get suppressed. Shame grows. Things that could have been said in two sentences turn into years of carrying something alone.</p>
+        <p>Most tools built for this space turn it into performance. Tracking. Streaks. Progress. Optimization. They quietly tell you: you are a problem to be solved.</p>
+
+        <p class="section-label" style="margin-top:2rem">What we believe</p>
+        <p>Acknowledging what hurts — just naming it, just saying it — reduces its weight. Not because it fixes anything. But because shame grows in silence, and even one witness changes something.</p>
+        <p>That witness can be a blank page. It can be the knowledge that someone, somewhere, read your words.</p>
+        <p>We believe emotional permission is more valuable than emotional optimization.</p>
+
+        <p class="section-label" style="margin-top:2rem">What we protect</p>
+        <p>This space is designed to stay simple. We will not add likes, metrics, streaks, AI interpretation, or anything that makes you feel watched or measured.</p>
+        <p>Every decision goes through one filter: does this increase emotional permission, or does it increase performance pressure?</p>
+        <p>If it adds pressure — it doesn't get added.</p>
+
+        <p class="section-label" style="margin-top:2rem">A final thought</p>
+        <p>Will this cure depression? No.</p>
+        <p>Will it reduce shame for some people? Very likely.</p>
+        <p>And reducing shame changes lives more than people realize.</p>
+
+        <p class="philosophy-pull">Emotional permission is more valuable than emotional optimization.</p>
+        </div>
+        <p class="about-footer">You are not broken. You are not too much. You are allowed to be here as you are.</p>
     </div>
 </div>
 
