@@ -11,6 +11,7 @@
 </head>
 <body>
 
+<a href="#main-content" class="skip-link">Skip to main content</a>
 <!-- Crisis bar -->
 <div class="crisis-bar">
     <span>Need urgent help?</span>
@@ -29,11 +30,13 @@
 
 <!-- ── LANDING ────────────────────────────────────────────────── -->
 <div id="landing" class="screen">
-    <div class="landing-wrap">
+    <div class="landing-wrap" id="main-content">
         <p class="landing-eyebrow">a private space for what's hard to say</p>
         <h1 class="landing-title">You can put it<br><em>down here.</em></h1>
         <p class="landing-sub">No fixing. No labels. No judgment.<br>Just you, and what you're carrying.</p>
 
+        <p class="landing-section-label">What do you need right now?</p>
+        <div class="landing-section-label" aria-hidden="true"></div>
         <div class="landing-actions">
             <button class="action-card" data-page="write-page">
                 <span class="action-icon">○</span>
@@ -169,6 +172,7 @@
     <div class="page-container">
         <p class="page-title">Guided Paths</p>
         <p class="page-sub">Optional tracks to understand yourself better. No deadlines. No pressure. Start and stop whenever you need.</p>
+        </div>
 
         <div class="paths-grid">
             <button class="path-card" data-path="anxiety">
@@ -226,8 +230,10 @@
         </div>
     </nav>
     <div class="page-container">
-        <p class="page-title">Things others have needed to say.</p>
-        <p class="page-sub">You are not the only one carrying something heavy.</p>
+        <div class="page-header">
+            <p class="page-title">Things others have needed to say.</p>
+            <p class="page-sub">You are not the only one carrying something heavy.</p>
+        </div>
         <div class="filter-row">
             <button class="filter-btn active" data-filter="">All</button>
             <button class="filter-btn" data-filter="anxiety">Anxiety</button>
@@ -257,8 +263,10 @@
         <button class="nav-back" data-page="landing">← Longingme</button>
     </nav>
     <div class="page-container">
-        <p class="page-title">What you have shared.</p>
-        <p class="page-sub">Only visible in this browser. No one else can see these are yours.</p>
+        <div class="page-header">
+            <p class="page-title">What you have shared.</p>
+            <p class="page-sub">Only visible in this browser. No one else can see these are yours.</p>
+        </div>
 
         <!-- Pattern reflection -->
         <div id="pattern-section" class="pattern-section hidden">
@@ -288,6 +296,7 @@
         </div>
         <button class="breath-toggle" id="breath-toggle">Begin</button>
 
+        <div class="ground-divider"></div>
         <div class="ground-54321">
             <p class="ground-54321-title">5 · 4 · 3 · 2 · 1 Grounding</p>
             <div class="steps-list">
