@@ -297,10 +297,25 @@
             const set = reflectionSets[Math.floor(Math.random() * reflectionSets.length)];
             reflectQs.innerHTML = '';
             set.forEach(q => {
-                const d = document.createElement('div');
-                d.className = 'reflect-q';
-                d.textContent = q;
-                reflectQs.appendChild(d);
+                const btn = document.createElement('button');
+                btn.className = 'reflect-q';
+                btn.textContent = q + ' →';
+                btn.title = 'Click to write about this';
+                btn.addEventListener('click', () => {
+                    // Hide confirmation, show write area fresh
+                    $('companion-response').classList.add('hidden');
+                    reflectSec.classList.add('hidden');
+                    // Set placeholder and focus textarea
+                    textarea.placeholder = q;
+                    textarea.value = '';
+                    $('write-char-count').textContent = '0 / 1000';
+                    saveBtn.disabled  = true;
+                    shareBtn.disabled = true;
+                    shareBtn.textContent = 'Share anonymously';
+                    textarea.focus();
+                    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                reflectQs.appendChild(btn);
             });
             reflectSec.classList.remove('hidden');
             reflectSec.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
