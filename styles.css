@@ -355,3 +355,113 @@ button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
+
+/* ── Landing additions ─────────────────────────────────────────── */
+.landing-clarify {
+    margin-bottom: var(--sp-lg);
+    text-align: center;
+    animation: fadeUp 0.9s ease 0.25s both;
+}
+.landing-clarify p {
+    font-size: 0.95rem; color: var(--text-muted);
+    margin-bottom: 0.25rem; line-height: 1.6;
+}
+.clarify-this {
+    color: var(--text-mid) !important;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.05rem !important;
+    margin-top: 0.75rem !important;
+}
+.landing-permission {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    animation: fadeUp 0.9s ease 0.5s both;
+}
+
+/* ── Whisper prompts on write page ─────────────────────────────── */
+.whisper-prompts {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-bottom: var(--sp-md);
+}
+.whisper-prompt {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.82rem; color: var(--text-muted);
+    background: transparent;
+    border: 1px solid var(--border-soft);
+    border-radius: 999px; padding: 0.3rem 0.9rem;
+    cursor: pointer; transition: all var(--ease);
+    font-family: var(--font-serif);
+}
+.whisper-prompt:hover {
+    border-color: rgba(150,174,159,0.25);
+    color: var(--text-mid);
+    background: rgba(150,174,159,0.05);
+}
+.whisper-label {
+    font-size: 0.68rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--text-muted);
+    margin-bottom: 0.6rem; display: block;
+}
+
+/* ── Regulation cues ───────────────────────────────────────────── */
+.regulation-cue {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.88rem; color: var(--text-muted);
+    text-align: center; padding: 0.6rem 0;
+    animation: softPulse 3s ease infinite;
+}
+
+/* ── Something small section ───────────────────────────────────── */
+.something-small {
+    margin-top: var(--sp-lg); padding: var(--sp-md);
+    background: var(--surface); border-radius: var(--r);
+    border-top: 1px solid var(--border-soft);
+}
+.something-small-label {
+    font-size: 0.7rem; text-transform: uppercase;
+    letter-spacing: 0.12em; color: var(--text-muted);
+    margin-bottom: 0.5rem; display: block;
+}
+.something-small p {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.95rem; color: var(--text-muted);
+    margin-bottom: 0.85rem;
+}
+.something-small-input {
+    width: 100%; padding: 0.85rem 1rem;
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 0.92rem; color: var(--text-mid);
+    background: var(--bg-3); border: 1px solid var(--border);
+    border-radius: var(--r-sm); resize: none;
+    transition: border-color var(--ease);
+    min-height: 80px;
+}
+.something-small-input:focus {
+    outline: none; border-color: rgba(150,174,159,0.3);
+}
+.something-small-input::placeholder { color: var(--text-muted); }
+.small-save-btn {
+    margin-top: 0.6rem; font-size: 0.8rem;
+    padding: 0.4rem 1.1rem; min-height: 36px;
+}
+
+/* ── Philosophy page ───────────────────────────────────────────── */
+.philosophy-block {
+    margin-bottom: var(--sp-lg);
+}
+.philosophy-block p {
+    font-size: 1rem; line-height: 1.9; color: var(--text-mid);
+    margin-bottom: 0.85rem;
+}
+.philosophy-pull {
+    font-family: var(--font-serif); font-style: italic;
+    font-size: 1.3rem; font-weight: 300;
+    color: var(--text); line-height: 1.5;
+    padding: var(--sp-md) 0; border-top: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--border-soft);
+    margin: var(--sp-md) 0; text-align: center;
+}
