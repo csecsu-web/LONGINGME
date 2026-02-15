@@ -237,7 +237,22 @@ em { font-style: italic; }
 .reflect-section.hidden { display: none; }
 .reflect-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--lavender); margin-bottom: 1rem; }
 .reflect-questions { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 0.85rem; }
-.reflect-q { font-family: var(--font-serif); font-style: italic; font-size: 0.96rem; color: var(--text-mid); line-height: 1.6; padding: 0.8rem 1rem; background: var(--bg-3); border-radius: var(--r-sm); border-left: 2px solid var(--border); }
+.reflect-q {
+    font-family: var(--font-serif); font-style: italic; font-size: 0.96rem;
+    color: var(--text-mid); line-height: 1.6;
+    padding: 0.8rem 1rem; background: var(--bg-3);
+    border-radius: var(--r-sm); border-left: 2px solid var(--border);
+    cursor: pointer; transition: all var(--ease);
+    width: 100%; text-align: left; display: block;
+    border-top: none; border-right: none; border-bottom: none;
+    border-left: 2px solid var(--border);
+}
+.reflect-q:hover {
+    border-left-color: var(--accent);
+    color: var(--text);
+    background: var(--surface-2);
+    padding-left: 1.25rem;
+}
 
 /* Private saved */
 .private-saved-section { margin-top: var(--sp-lg); padding-top: var(--sp-md); border-top: 1px solid var(--border-soft); }
