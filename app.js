@@ -269,8 +269,8 @@
             }]);
 
             if (error) {
-                console.error(error);
-                alert('Something went wrong. Please try again.');
+                console.error('SUPABASE ERROR:', error.message, error.details, error.hint, error.code);
+                alert('Error: ' + error.message + ' | Code: ' + error.code);
                 shareBtn.disabled = false;
                 shareBtn.textContent = 'Share anonymously';
                 return;
