@@ -264,13 +264,15 @@
             shareBtn.textContent = 'sharing...';
 
             const { error } = await db.from('fragments').insert([{
-                text: text, state: selectedTag || 'unknown',
-                flagged: false, anon_id: ANON_ID
+                text: text,
+                state: selectedTag || 'unknown',
+                flagged: false,
+                anon_id: ANON_ID
             }]);
 
             if (error) {
-                console.error('SUPABASE ERROR:', error.message, error.details, error.hint, error.code);
-                alert('Error: ' + error.message + ' | Code: ' + error.code);
+                console.error('Supabase error:', error);
+                alert('Something went wrong. Please try again.');
                 shareBtn.disabled = false;
                 shareBtn.textContent = 'Share anonymously';
                 return;
