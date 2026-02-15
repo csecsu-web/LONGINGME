@@ -197,6 +197,7 @@
             if (page === 'read-page')   loadWall(true);
             if (page === 'my-page')     loadMy(true);
             if (page === 'ground-page') setGroundMessage();
+            if (page === 'philosophy-page') {} // static page
             if (page === 'write-page')  setCompanionGreeting();
         });
     }
@@ -216,6 +217,35 @@
 
     // ── Write page ────────────────────────────────────────────────
     function setupWritePage() {
+        // Whisper prompts — click to load into textarea
+        $$('.whisper-prompt').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const textarea = $('entry-input');
+                textarea.placeholder = btn.textContent;
+                textarea.focus();
+                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Swap regulation cue to post-breath message
+                const cue = $('regulation-cue');
+                if (cue) { cue.textContent = 'Take your time. There is no rush.'; }
+            });
+        });
+
+        // Something small — save privately
+        const smallInput = $('small-input');
+        const smallBtn   = $('small-save-btn');
+        if (smallBtn && smallInput) {
+            smallBtn.addEventListener('click', () => {
+                const text = smallInput.value.trim();
+                if (!text) return;
+                const smalls = JSON.parse(localStorage.getItem('longingme_small') || '[]');
+                smalls.unshift({ text, timestamp: Date.now() });
+                localStorage.setItem('longingme_small', JSON.stringify(smalls.slice(0, 30)));
+                smallInput.value = '';
+                smallBtn.textContent = 'Saved ✓';
+                setTimeout(() => { smallBtn.textContent = 'Save privately'; }, 2000);
+            });
+        }
+
         const textarea   = $('entry-input');
         const charCount  = $('write-char-count');
         const saveBtn    = $('save-private-btn');
