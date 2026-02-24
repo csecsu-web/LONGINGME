@@ -38,14 +38,16 @@
 
     // ── Companion responses after submission ──────────────────────
     const companionResponses = [
-        "I'm here with you.",
-        "That sounds heavy.",
-        "You're not dramatic.",
+        "Thank you — what you expressed is seen.",
+        "You're allowed to feel this.",
+        "That sounds heavy. You're not carrying it alone right now.",
+        "You're not dramatic for feeling this.",
         "It makes sense you feel this.",
         "Thank you for trusting this space.",
         "I hear you.",
         "You didn't have to say that, and you did anyway.",
-        "That took something to write."
+        "That took something to write.",
+        "This feeling is real. It makes sense."
     ];
 
     // ── Affirmations after submission ─────────────────────────────
@@ -176,6 +178,21 @@
 
     // ── Init ──────────────────────────────────────────────────────
     function init() {
+        // Mobile optimizations
+        if ('ontouchstart' in window) {
+            document.body.classList.add('touch-device');
+        }
+        
+        // Prevent zoom on double-tap for buttons
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+        
         setupNavigation();
         setupWritePage();
         setupReadPage();
@@ -184,7 +201,21 @@
         setupGrounding();
         setupPauseModal();
         loadPrivateEntries();
+        setupShowPathsToggle();
         setTimeout(() => switchScreen('landing'), 1000);
+    }
+
+    // Show paths toggle
+    function setupShowPathsToggle() {
+        const btn = $('show-paths-btn');
+        const card = $('paths-card');
+        if (btn && card) {
+            btn.addEventListener('click', () => {
+                card.classList.remove('hidden-initially');
+                card.classList.add('reveal-paths');
+                btn.style.display = 'none';
+            });
+        }
     }
 
     // ── Navigation ────────────────────────────────────────────────
@@ -205,8 +236,16 @@
     function switchScreen(id) {
         $$('.screen').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
         const el = $(id);
-        if (el) { el.style.display = 'block'; requestAnimationFrame(() => el.classList.add('active')); }
-        window.scrollTo(0, 0);
+        if (el) {
+            el.style.display = 'block';
+            requestAnimationFrame(() => el.classList.add('active'));
+        }
+        // Smooth scroll to top on mobile
+        if (window.innerWidth <= 640) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+            window.scrollTo(0, 0);
+        }
     }
 
     // ── Companion greeting ────────────────────────────────────────
@@ -223,7 +262,12 @@
                 const textarea = $('entry-input');
                 textarea.placeholder = btn.textContent;
                 textarea.focus();
-                textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // On mobile, scroll less aggressively
+                if (window.innerWidth <= 640) {
+                    textarea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                } else {
+                    textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
                 // Swap regulation cue to post-breath message
                 const cue = $('regulation-cue');
                 if (cue) { cue.textContent = 'Take your time. There is no rush.'; }
