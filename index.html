@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
 
     <!-- Primary SEO -->
     <title>Longingme — A place to say what you can't say out loud</title>
@@ -48,6 +48,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<style>body { -webkit-tap-highlight-color: rgba(150,174,159,0.15); touch-action: manipulation; }</style>
 
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <!-- Crisis bar -->
@@ -68,7 +69,7 @@
 
 <!-- ── LANDING ────────────────────────────────────────────────── -->
 <div id="landing" class="screen">
-    <div class="landing-wrap" id="main-content">
+    <main class="landing-wrap" id="main-content" role="main" aria-label="Welcome to Longingme">
         <p class="landing-eyebrow">no accounts · no ads · no judgment</p>
         <h1 class="landing-title">You don't have to<br><em>be okay here.</em></h1>
 
@@ -81,28 +82,29 @@
 
         <p class="landing-section-label">What do you need right now?</p>
         <div class="landing-actions">
-            <button class="action-card" data-page="write-page">
+            <button class="action-card" data-page="write-page" aria-label="Write and release your feelings">
                 <span class="action-icon">○</span>
                 <span class="action-title">Write it. Release it.</span>
                 <span class="action-desc">Say what you've been holding in</span>
             </button>
-            <button class="action-card" data-page="paths-page">
+            <button class="action-card hidden-initially" id="paths-card" data-page="paths-page" aria-label="Explore guided paths for self-understanding">
                 <span class="action-icon">○</span>
                 <span class="action-title">Explore yourself gently</span>
                 <span class="action-desc">Guided paths — no deadlines, no pressure</span>
             </button>
-            <button class="action-card" data-page="read-page">
+            <button class="action-card" data-page="read-page" aria-label="Read what others have shared anonymously">
                 <span class="action-icon">○</span>
                 <span class="action-title">Know I'm not alone</span>
                 <span class="action-desc">Read what others have needed to say</span>
             </button>
-            <button class="action-card" data-page="ground-page">
+            <button class="action-card" data-page="ground-page" aria-label="Grounding exercises and breathing">
                 <span class="action-icon">○</span>
                 <span class="action-title">Just sit here for a moment</span>
                 <span class="action-desc">Breathe. You don't have to do anything.</span>
             </button>
         </div>
 
+        <button class="show-paths-btn" id="show-paths-btn">+ Guided paths (optional)</button>
         <p class="landing-permission">You're allowed to feel this.</p>
         <button class="landing-skip" data-page="write-page">I just need to write →</button>
 
@@ -111,9 +113,9 @@
             <span>·</span>
             <button class="footer-link" data-page="about-page">About</button>
             <span>·</span>
-            <button class="footer-link" data-page="my-page">My entries</button>
+            <button class="footer-link" data-page="my-page">Your writing</button>
         </div>
-    </div>
+    </main>
 </div>
 
 <!-- ── WRITE PAGE ─────────────────────────────────────────────── -->
@@ -122,7 +124,7 @@
         <button class="nav-back" data-page="landing">← Longingme</button>
         <div class="nav-links">
             <button class="nav-link" data-page="read-page">Read</button>
-            <button class="nav-link" data-page="my-page">Mine</button>
+            <button class="nav-link" data-page="my-page">Yours</button>
             <button class="nav-link glow-link" data-page="ground-page">Breathe</button>
         </div>
     </nav>
@@ -188,7 +190,7 @@
 
         <!-- Textarea -->
         <div class="textarea-wrap">
-            <textarea id="entry-input" class="entry-textarea" placeholder="Write whatever you need to. Nothing will judge you here." maxlength="1000"></textarea>
+            <textarea id="entry-input" class="entry-textarea" aria-label="Write your thoughts here" placeholder="Write whatever you need to. Nothing will judge you here." maxlength="1000"></textarea>
             <button class="pause-inline-btn" id="pause-btn">pause · breathe</button>
         </div>
         <div class="write-meta">
@@ -200,7 +202,7 @@
         </div>
 
         <!-- Companion response after submit -->
-        <div id="companion-response" class="companion-response hidden">
+        <div id="companion-response" class="companion-response hidden" role="status" aria-live="polite">
             <div class="companion-bubble">
                 <span class="companion-dot"></span>
                 <p id="companion-response-text"></p>
@@ -229,7 +231,7 @@
         <div class="something-small">
             <span class="something-small-label">Something small</span>
             <p>Not gratitude. Not positivity. Just — is there anything, however small, that kept you going today?</p>
-            <textarea class="something-small-input" id="small-input" placeholder="A smell. A song. A moment. Nothing has to mean anything." maxlength="300" rows="3"></textarea>
+            <textarea class="something-small-input" id="small-input" aria-label="Something small that kept you going" placeholder="A smell. A song. A moment. Nothing has to mean anything." maxlength="300" rows="3"></textarea>
             <button class="btn-ghost-sm small-save-btn" id="small-save-btn">Save privately</button>
         </div>
     </div>
@@ -323,7 +325,7 @@
             <button class="filter-btn" data-filter="emptiness">Emptiness</button>
             <button class="filter-btn" data-filter="worthlessness">Worthlessness</button>
         </div>
-        <div id="shared-wall" class="shared-wall"><p class="loading-note">loading...</p></div>
+        <div id="shared-wall" class="shared-wall" role="feed" aria-live="polite" aria-busy="true"><p class="loading-note"><span class="spinner"></span>Fetching entries...</p></div>
         <button id="wall-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
     </div>
 </div>
@@ -345,7 +347,7 @@
             <div id="pattern-text" class="pattern-text"></div>
         </div>
 
-        <div id="my-submissions-list" class="shared-wall"><p class="loading-note">loading...</p></div>
+        <div id="my-submissions-list" class="shared-wall" role="feed" aria-live="polite" aria-busy="true"><p class="loading-note"><span class="spinner"></span>Fetching your entries...</p></div>
         <button id="my-load-more" class="btn-ghost load-more-btn" style="display:none">See more</button>
     </div>
 </div>
